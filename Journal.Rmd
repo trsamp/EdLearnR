@@ -1,5 +1,5 @@
 ---
-title: "AMPtest"
+title: "Path Analysis"
 output:
   html_document:
     toc: true
@@ -19,9 +19,9 @@ IMPORTANT: You can delete everything in here and start fresh. You might want to 
 
 This is an .Rmd file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a \# in front of your text, it will create a top level-header.
 
-# My first post
+# 
 
-2018 | 7 | 23 Last compiled: `r Sys.Date()`
+Last compiled: `r Sys.Date()`
 
 Notice that whatever you define as a top level header, automatically gets put into the table of contents bar on the left. 
 
@@ -44,10 +44,50 @@ I'm writing this tutorial going from the top down. And, this is how it will be p
 So far this is just a blog where you can write in plain text and serve your writing to a webpage. One of the main purposes of this lab journal is to record your progress learning R. The reason I am asking you to use this process is because you can both make a website, and a lab journal, and learn R all in R-studio. This makes everything really convenient and in the sam place. 
 
 So, let's say you are learning how to make a histogram in R. For example, maybe you want to sample 100 numbers from a normal distribution with mean = 0, and standard deviation =1, and then you want to plot a histogram. You can do this right here by using an r code block, like this:
-
+Example 1 : [Download](https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view)
 ```{r}
-samples <- rnorm(100, mean=0, sd=1)
-hist(samples)
+library(lavaan)
+
+lower = '
+1.000 
+0.859 1.000 
+0.873 0.882 1.000
+0.816 0.854 0.852 1.000
+0.281 0.319 0.297 0.301 1 
+0.369 0.363 0.343 0.363 0.628 1
+
+ '
+au.cor = getCov(lower, names = c("sa", "rt", "bp","imp", "ao", "we"))
+au.cor
+
+au.cov = cor2cov(R = au.cor, sds = c(0.629, 0.341, 0.560, 
+                                         0.318,0.284, 0.291 ))
+au.cov
+
+
+model = '
+	 	   auf =~ sa + rt + bp + imp
+	     aof =~ ao
+	     wef =~ we
+	     wef~ aof + auf
+	     aof ~ auf
+	     ao ~~ .01*ao
+	     we ~~ .01*we
+	     sa ~~ bp
+ 	 '
+#summary(onefactor)
+results = sem(model, sample.cov=au.cov, sample.nobs=605)
+summary(results, standardize=TRUE, fit.measures=TRUE)
+modificationIndices(results, minimum.value = 0)
+
+library(semPlot)
+
+semPaths(results,
+         whatLabels = "std",
+         layout = "tree")
+
+sessionInfo()
+
 ```
 
 When you knit this R Markdown document, you will see that the histogram is printed to the page, along with the R code. This document can be set up to hide the R code in the webpage, just delete the comment (hashtag), from the cold folding option in the yaml header up top. For purposes of letting yourself see the code, and me see the code, best to keep it the way that it is. You learn all of these things and more can be customized in each R code block.

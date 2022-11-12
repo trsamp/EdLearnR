@@ -360,9 +360,11 @@ level-header.</p>
 </div>
 <div id="path-analysis" class="section level1">
 <h1>Path analysis</h1>
-<p>วิเคราะห์เส้นทางอิทธิพล</p>
+<div id="การวเคราะหเสนทางอทธพล" class="section level2">
+<h2>การวิเคราะห์เส้นทางอิทธิพล</h2>
+<p>ตัวอย่างจากบทความวิจัย</p>
 <pre class="r"><code>library(lavaan)
-
+#correalation from article
 regression.cor &lt;- lav_matrix_lower2full(c(1.0,
                                           0.14, 1.0,
                                           0.34, -0.14, 1.0,
@@ -375,11 +377,12 @@ regression.cor</code></pre>
 ## TSL 0.14  1.00 -0.14 -0.03
 ## CTE 0.34 -0.14  1.00  0.43
 ## TEF 0.23 -0.03  0.43  1.00</code></pre>
-<pre class="r"><code>regression.model &lt;- &#39;
+<pre class="r"><code>#model syntax
+regression.model &lt;- &#39;
 TEF ~ TFL + TSL + CTE
 CTE ~ TFL + TSL
 &#39;
-library(lavaan)
+#model fit
 regression.fit &lt;- sem(regression.model, sample.cov = regression.cor, sample.nobs = 813)
 summary(regression.fit, rsquare = TRUE)</code></pre>
 <pre><code>## lavaan 0.6-12 ended normally after 1 iterations
@@ -420,7 +423,8 @@ summary(regression.fit, rsquare = TRUE)</code></pre>
 ##                    Estimate
 ##     TEF               0.193
 ##     CTE               0.151</code></pre>
-<pre class="r"><code>library(semPlot)
+<pre class="r"><code>#diagram
+library(semPlot)
 semPaths(regression.fit,
          whatLabels=&quot;STDE&quot;,
          layout = &quot;tree&quot;)</code></pre>
@@ -438,6 +442,7 @@ semPaths(regression.fit,
          label.cex = 1.3
          )</code></pre>
 <p><img src="Journal_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+</div>
 </div>
 <div id="structural-equation-model" class="section level1">
 <h1>Structural Equation Model</h1>

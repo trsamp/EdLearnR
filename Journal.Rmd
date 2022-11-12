@@ -24,12 +24,13 @@ This is an .Rmd file. It is plain text with special features. Any time you write
 Last compiled: `r Sys.Date()`
 
 # Path analysis
+## การวิเคราะห์เส้นทางอิทธิพล
 
-วิเคราะห์เส้นทางอิทธิพล
+ตัวอย่างจากบทความวิจัย
 
 ```{r}
 library(lavaan)
-
+#correalation from article
 regression.cor <- lav_matrix_lower2full(c(1.0,
                                           0.14, 1.0,
                                           0.34, -0.14, 1.0,
@@ -38,14 +39,16 @@ regression.cor <- lav_matrix_lower2full(c(1.0,
 colnames(regression.cor) <- rownames(regression.cor) <- c("TFL", "TSL", "CTE","TEF")
 regression.cor
 
+#model syntax
 regression.model <- '
 TEF ~ TFL + TSL + CTE
 CTE ~ TFL + TSL
 '
-library(lavaan)
+#model fit
 regression.fit <- sem(regression.model, sample.cov = regression.cor, sample.nobs = 813)
 summary(regression.fit, rsquare = TRUE)
 
+#diagram
 library(semPlot)
 semPaths(regression.fit,
          whatLabels="STDE",

@@ -16,4 +16,4 @@ output: html_document
 5. Daniell Navarro recently made this website for introducing R, it's great, check it out (also made using this R markdown process): [http://compcogscisydney.org/psyr/](http://compcogscisydney.org/psyr/)
 6. Check out my slightly older programming book that also introduces R [https://crumplab.github.io/programmingforpsych/](https://crumplab.github.io/programmingforpsych/)
 7. This is the definitive guide for all things R Markdown (you will find this very useful as you get better at this skill): [https://bookdown.org/yihui/rmarkdown/](https://bookdown.org/yihui/rmarkdown/)
-8. lavaan on web [https://rpubs.com/zstickley/801247] (https://rpubs.com/zstickley/801247)
+8. lavaan on web [https://rpubs.com/zstickley/801247] 

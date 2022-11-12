@@ -1,5 +1,5 @@
 ---
-title: "Path Analysis"
+title: "SEM with Lavaan"
 output:
   html_document:
     toc: true
@@ -23,19 +23,12 @@ This is an .Rmd file. It is plain text with special features. Any time you write
 
 Last compiled: `r Sys.Date()`
 
-
-
 # Adding R stuff
 
-Last compiled: `r Sys.Date()`
+ช้ตัวอย่างจากบทความวิชาการของ[Download](https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view)
 
-I'm writing this tutorial going from the top down. And, this is how it will be printed. So, notice the second post is second in the list. If you want your most recent post to be at the top, then make a new post starting at the top. If you want the oldest first, do, then keep adding to the bottom
+ข้อมูลที่ใช้ในการวิเคราะห์ : correlation matrix จากบทความข้างต้น
 
-# Adding R stuff
-
-เราใช้ตัวอย่างจากบทความวิชาการของ
-
-Example 1 : [Download](https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view)
 ```{r}
 library(lavaan)
 
@@ -81,4 +74,4 @@ sessionInfo()
 
 ```
 
-
+# Adding R stuff

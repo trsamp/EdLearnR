@@ -23,9 +23,51 @@ This is an .Rmd file. It is plain text with special features. Any time you write
 
 Last compiled: `r Sys.Date()`
 
-# Adding R stuff
+# Path analysis
 
-ช้ตัวอย่างจากบทความวิชาการของ[Download](https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view)
+วิเคราะห์เส้นทางอิทธิพล
+
+```{r}
+library(lavaan)
+
+regression.cor <- lav_matrix_lower2full(c(1.0,
+                                          0.14, 1.0,
+                                          0.34, -0.14, 1.0,
+                                          0.23, -0.03, 0.43, 1.0))
+                                          
+colnames(regression.cor) <- rownames(regression.cor) <- c("TFL", "TSL", "CTE","TEF")
+regression.cor
+
+regression.model <- '
+TEF ~ TFL + TSL + CTE
+CTE ~ TFL + TSL
+'
+library(lavaan)
+regression.fit <- sem(regression.model, sample.cov = regression.cor, sample.nobs = 813)
+summary(regression.fit, rsquare = TRUE)
+
+library(semPlot)
+semPaths(regression.fit,
+         whatLabels="STDE",
+         layout = "tree")
+#adjust path
+semPaths(regression.fit,
+         whatLabels="STDE",
+         layout = "tree",
+         style = "ram",
+         rotation = 1,
+         sizeMan = 7,
+         sizeLat = 7,
+         color = "lightgray",
+         edge.label.cex = 1.2,
+         label.cex = 1.3
+         )
+```
+
+
+# Structural equation model
+
+ใช้ตัวอย่างจากบทความวิชาการของ     [Download](https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view)
 
 ข้อมูลที่ใช้ในการวิเคราะห์ : correlation matrix จากบทความข้างต้น
 
@@ -74,4 +116,4 @@ sessionInfo()
 
 ```
 
-# Adding R stuff
+

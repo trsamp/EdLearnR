@@ -43,24 +43,5 @@ model  <- ' env  =~ lead + inno + team + pscse + diver'
 t400 <- cfa(model, data=dat,std.lv=TRUE) 
 summary(t400, fit.measure=TRUE, standardized=TRUE)
 
-```
-```{r}
-#one factor three items, variance std 
-model2  <- ' env =~ NA*lead + inno + team + pscse + diver 
-          env ~~ 1*env ' 
-model2  <- ' env  =~ lead + inno + team + pscse + diver'
-t400 <- cfa(model2, data=dat,std.lv=TRUE) 
-summary(t400, fit.measure=TRUE, standardized=TRUE)
-
 
 ```
-```{r}
-install.packages("semPlot")
-library(semPlot)
-
-semPaths(t400,
-         whatLabels="STDE",
-         layout = "tree")
-```
-
-

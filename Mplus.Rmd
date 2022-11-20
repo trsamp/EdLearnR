@@ -23,96 +23,41 @@ This is an .Rmd file. It is plain text with special features. Any time you write
 
 Last compiled: `r Sys.Date()`
 
-# Path analysis
+# Confirmatory Factor Analysis
 
-วิเคราะห์เส้นทางอิทธิพล
-
-```{r}
-library(lavaan)
-
-regression.cor <- lav_matrix_lower2full(c(1.0,
-                                          0.14, 1.0,
-                                          0.34, -0.14, 1.0,
-                                          0.23, -0.03, 0.43, 1.0))
-                                          
-colnames(regression.cor) <- rownames(regression.cor) <- c("TFL", "TSL", "CTE","TEF")
-regression.cor
-
-regression.model <- '
-TEF ~ TFL + TSL + CTE
-CTE ~ TFL + TSL
-'
-library(lavaan)
-regression.fit <- sem(regression.model, sample.cov = regression.cor, sample.nobs = 813)
-summary(regression.fit, rsquare = TRUE)
-
-library(semPlot)
-semPaths(regression.fit,
-         whatLabels="STDE",
-         layout = "tree")
-#adjust path
-semPaths(regression.fit,
-         whatLabels="STDE",
-         layout = "tree",
-         style = "ram",
-         rotation = 1,
-         sizeMan = 7,
-         sizeLat = 7,
-         color = "lightgray",
-         edge.label.cex = 1.2,
-         label.cex = 1.3
-         )
-```
-
-
-# Structural equation model
-
-ใช้ตัวอย่างจากบทความวิชาการของ     [Download](https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view)
-
-ข้อมูลที่ใช้ในการวิเคราะห์ : correlation matrix จากบทความข้างต้น
+การวิเคราะห์องค์ประกอบ
 
 ```{r}
 library(lavaan)
 
-lower = '
-1.000 
-0.859 1.000 
-0.873 0.882 1.000
-0.816 0.854 0.852 1.000
-0.281 0.319 0.297 0.301 1 
-0.369 0.363 0.343 0.363 0.628 1
+install.packages("foreign", dependencies=TRUE)
+install.packages("lavaan", dependencies=TRUE)
+library(foreign) 
+library(lavaan)
 
- '
-au.cor = getCov(lower, names = c("sa", "rt", "bp","imp", "ao", "we"))
-au.cor
+dat <- read.spss("C:/Users/thomr/OneDrive/Desktop/R/t400.sav", to.data.frame = TRUE, use.value.labels = FALSE)
 
-au.cov = cor2cov(R = au.cor, sds = c(0.629, 0.341, 0.560, 
-                                         0.318,0.284, 0.291 ))
-au.cov
+round(cor(dat[,4:8]),2)
+round(cov(dat[,4:8]),2)
+#one factor three items, default marker method
+model  <- ' env  =~ lead + inno + team + pscse + diver'
+t400 <- cfa(model, data=dat,std.lv=TRUE) 
+summary(t400, fit.measure=TRUE, standardized=TRUE)
 
 
-model = '
-	 	   auf =~ sa + rt + bp + imp
-	     aof =~ ao
-	     wef =~ we
-	     wef~ aof + auf
-	     aof ~ auf
-	     ao ~~ .01*ao
-	     we ~~ .01*we
-	     sa ~~ bp
- 	 '
-#summary(onefactor)
-results = sem(model, sample.cov=au.cov, sample.nobs=605)
-summary(results, standardize=TRUE, fit.measures=TRUE)
-modificationIndices(results, minimum.value = 0)
+#one factor three items, variance std 
+model2  <- ' env =~ NA*lead + inno + team + pscse + diver 
+          env ~~ 1*env ' 
+model2  <- ' env  =~ lead + inno + team + pscse + diver'
+t400 <- cfa(model2, data=dat,std.lv=TRUE) 
+summary(t400, fit.measure=TRUE, standardized=TRUE)
 
+install.packages("semPlot")
 library(semPlot)
 
-semPaths(results,
-         whatLabels = "std",
+semPaths(t400,
+         whatLabels="STDE",
          layout = "tree")
-
-sessionInfo()
 
 ```
 

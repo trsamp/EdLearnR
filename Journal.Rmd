@@ -119,60 +119,6 @@ sessionInfo()
 
 ```
 
-# Confirmatory Factor Analysis
-
-```{r}
-
-install.packages("foreign", dependencies=TRUE)
-install.packages("lavaan", dependencies=TRUE)
-library(foreign) 
-library(lavaan)
-
-dat <- read.spss("C:/Users/thomr/OneDrive/Desktop/R/t400.sav", to.data.frame = TRUE, use.value.labels = FALSE)
-
-round(cor(dat[,4:8]),2)
-round(cov(dat[,4:8]),2)
 
 
-```
-
-```{r}
-#one factor three items, default marker method
-model  <- ' env  =~ lead + inno + team + pscse + diver'
-t400 <- cfa(model, data=dat,std.lv=TRUE) 
-summary(t400, fit.measure=TRUE, standardized=TRUE)
-
-
-#one factor three items, variance std 
-model2  <- ' env =~ NA*lead + inno + team + pscse + diver 
-          env ~~ 1*env ' 
-model2  <- ' env  =~ lead + inno + team + pscse + diver'
-t400 <- cfa(model2, data=dat,std.lv=TRUE) 
-summary(t400, fit.measure=TRUE, standardized=TRUE)
-
-
-```
-
-
-```{r}
-#one factor three items, default marker method
-model  <- ' env  =~ lead + inno + team + pscse + diver'
-t400 <- cfa(model, data=dat,std.lv=TRUE) 
-summary(t400, fit.measure=TRUE, standardized=TRUE)
-
-
-#one factor three items, variance std 
-model2  <- ' env =~ NA*lead + inno + team + pscse + diver 
-          env ~~ 1*env ' 
-model2  <- ' env  =~ lead + inno + team + pscse + diver'
-t400 <- cfa(model2, data=dat,std.lv=TRUE) 
-summary(t400, fit.measure=TRUE, standardized=TRUE)
-
-install.packages("semPlot")
-library(semPlot)
-
-semPaths(t400,
-         whatLabels="STDE",
-         layout = "tree")
-```
 

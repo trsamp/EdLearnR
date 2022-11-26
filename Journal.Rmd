@@ -1,5 +1,5 @@
 ---
-title: "SEM with lavaan"
+title: "SEM"
 output:
   html_document:
     toc: true

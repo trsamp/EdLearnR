@@ -355,15 +355,22 @@ div.tocify {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
 </script>
-<div id="section" class="section level1">
-<h1></h1>
+<div id="lab-skills-learned" class="section level1">
+<h1>Lab skills learned</h1>
 <p>Last compiled: 2022-11-26</p>
 </div>
 <div id="path-analysis" class="section level1">
 <h1>Path analysis</h1>
-<div id="การวเคราะหเสนทางอทธพล" class="section level2">
-<h2>การวิเคราะห์เส้นทางอิทธิพล</h2>
-<p>ตัวอย่างจากบทความวิจัย</p>
+<p>Reading assignment : Kurt, T., Duyar, I., &amp; Calik, T. (2012). Are
+we legitimate yet? A closer look at the casual relationship mechanisms
+among principal leadership, teacher self‐efficacy and collective
+efficacy. Journal of Management Development, 31, 71-86.</p>
+<ul>
+<li>Data in .txt format <a
+href="https://github.com/trsamp/SEM101/blob/main/data/01PA.txt">Download</a></li>
+<li>Data in SPSS format <a
+href="https://github.com/trsamp/SEM101/blob/main/data/01PA.sav">Download</a></li>
+</ul>
 <pre class="r"><code>library(lavaan)
 #correlation from article
 regression.cor &lt;- lav_matrix_lower2full(c(1.0,
@@ -444,12 +451,18 @@ semPaths(regression.fit,
          )</code></pre>
 <p><img src="Journal_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
 </div>
-</div>
 <div id="confirmatory-factor-analysis" class="section level1">
 <h1>Confirmatory Factor Analysis</h1>
-<p>ใช้ตัวอย่างจากบทความวิชาการของ <a
-href="https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view">Download</a></p>
-<p>ข้อมูลที่ใช้ในการวิเคราะห์ : correlation matrix จากบทควา</p>
+<p>Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A.,
+&amp; Wongwanich, S. (2018). Exploring the effects of authentic
+leadership on academic optimism and teacher engagement in Thailand.
+International Journal of Educational Management, 32(1), 27-45. <a
+href="https://doi.org/10.1108/IJEM-10-2016-0233"
+class="uri">https://doi.org/10.1108/IJEM-10-2016-0233</a></p>
+<ul>
+<li>Data in SPSS format <a
+href="https://github.com/trsamp/SEM101/blob/main/data/03SEM.sav">Download</a></li>
+</ul>
 <pre class="r"><code>library(lavaan)
 
 lower = &#39;
@@ -576,9 +589,16 @@ semPaths(results,
 </div>
 <div id="structural-equation-model" class="section level1">
 <h1>Structural Equation Model</h1>
-<p>ใช้ตัวอย่างจากบทความวิชาการของ <a
-href="https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view">Download</a></p>
-<p>ข้อมูลที่ใช้ในการวิเคราะห์ : correlation matrix จากบทความข้างต้น</p>
+<p>Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A.,
+&amp; Wongwanich, S. (2018). Exploring the effects of authentic
+leadership on academic optimism and teacher engagement in Thailand.
+International Journal of Educational Management, 32(1), 27-45. <a
+href="https://doi.org/10.1108/IJEM-10-2016-0233"
+class="uri">https://doi.org/10.1108/IJEM-10-2016-0233</a></p>
+<ul>
+<li>Data in SPSS format <a
+href="https://github.com/trsamp/SEM101/blob/main/data/03SEM.sav">Download</a></li>
+</ul>
 <pre class="r"><code>library(lavaan)
 
 lower = &#39;

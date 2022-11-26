@@ -1,6 +1,6 @@
 name: "TRS_test"
 navbar:
-  title: "MyLabJournal"
+  title: "SEM101"
   left:
     - text: "Home"
       href: index.html

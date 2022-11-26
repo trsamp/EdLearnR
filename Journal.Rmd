@@ -18,14 +18,16 @@ klippy::klippy(position = c('top', 'right'))
 
 
 
-# 
+# Lab skills learned
 Last compiled: `r Sys.Date()`
 
 
 # Path analysis
-## การวิเคราะห์เส้นทางอิทธิพล
 
-ตัวอย่างจากบทความวิจัย
+Reading assignment : Kurt, T., Duyar, I., & Calik, T. (2012). Are we legitimate yet? A closer look at the casual relationship mechanisms among principal leadership, teacher self‐efficacy and collective efficacy. Journal of Management Development, 31, 71-86. 
+
+- Data in .txt format [Download](https://github.com/trsamp/SEM101/blob/main/data/01PA.txt)
+- Data in SPSS format [Download](https://github.com/trsamp/SEM101/blob/main/data/01PA.sav)
 
 ```{r}
 library(lavaan)
@@ -68,9 +70,10 @@ semPaths(regression.fit,
 
 # Confirmatory Factor Analysis
 
-ใช้ตัวอย่างจากบทความวิชาการของ     [Download](https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view)
+Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A., & Wongwanich, S. (2018). Exploring the effects of authentic leadership on academic optimism and teacher engagement in Thailand. International Journal of Educational Management, 32(1), 27-45. https://doi.org/10.1108/IJEM-10-2016-0233
 
-ข้อมูลที่ใช้ในการวิเคราะห์ : correlation matrix จากบทควา
+- Data in SPSS format [Download](https://github.com/trsamp/SEM101/blob/main/data/03SEM.sav)
+
 ```{r}
 library(lavaan)
 
@@ -119,9 +122,9 @@ semPaths(results,
 
 # Structural Equation Model
 
-ใช้ตัวอย่างจากบทความวิชาการของ     [Download](https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view)
+Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A., & Wongwanich, S. (2018). Exploring the effects of authentic leadership on academic optimism and teacher engagement in Thailand. International Journal of Educational Management, 32(1), 27-45. https://doi.org/10.1108/IJEM-10-2016-0233
 
-ข้อมูลที่ใช้ในการวิเคราะห์ : correlation matrix จากบทความข้างต้น
+- Data in SPSS format [Download](https://github.com/trsamp/SEM101/blob/main/data/03SEM.sav)
 
 ```{r}
 library(lavaan)

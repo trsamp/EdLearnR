@@ -6,7 +6,7 @@ output:
     toc_float: true
     collapsed: false
     number_sections: false
-    toc_depth: 1
+    toc_depth: 5
     #code_folding: hide
 ---
 
@@ -23,7 +23,7 @@ klippy::klippy(position = c('top', 'right'))
 Last compiled: `r Sys.Date()`
 
 
-# Path analysis
+## 1.Path analysis
 
 Reading assignment : Kurt, T., Duyar, I., & Calik, T. (2012). Are we legitimate yet? A closer look at the casual relationship mechanisms among principal leadership, teacher self‐efficacy and collective efficacy. Journal of Management Development, 31, 71-86. 
 
@@ -32,7 +32,7 @@ Reading assignment : Kurt, T., Duyar, I., & Calik, T. (2012). Are we legitimate 
 
 ```
 
-TITLE: individual montecarlo
+TITLE: path analysis
 DATA:
   FILE IS data2.txt; !keep all file in the same folder
 
@@ -48,17 +48,17 @@ MODEL: !put the syntax indicate causal relationships
 MODEL INDIRECT:
 TEF IND TFL;
 
-OUTPUT: SAMPSTAT STDYX; !standardized coefficient need to be report
+OUTPUT: SAMPSTAT STDYX; 
 
 ```
-## PRINTOUT
+#### PRINTOUT
 
 ```
 INPUT READING TERMINATED NORMALLY
 
 
 
-individual montecarlo
+path analysis
 
 SUMMARY OF ANALYSIS
 
@@ -319,6 +319,8 @@ Effects from TFL to TEF
     TFL                0.092      0.034      2.691      0.007
 ```
 
-## DIAGRAM from Mplus
+#### DIAGRAM from Mplus
+</div>
+<div class="col-sm-10">
 <a href = "https://crumplab.github.io">
 ![](images/PA.png)

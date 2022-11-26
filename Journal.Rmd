@@ -18,7 +18,7 @@ klippy::klippy(position = c('top', 'right'))
 
 
 
-# Lab skills learned
+
 Last compiled: `r Sys.Date()`
 
 

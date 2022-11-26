@@ -356,8 +356,8 @@ div.tocify {
   addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
 </script>
 <p>Last compiled: 2022-11-26</p>
-<div id="path-analysis" class="section level1">
-<h1>Path analysis</h1>
+<div id="path-analysis" class="section level2">
+<h2>1.Path analysis</h2>
 <p>Reading assignment : Kurt, T., Duyar, I., &amp; Calik, T. (2012). Are
 we legitimate yet? A closer look at the casual relationship mechanisms
 among principal leadership, teacher self‐efficacy and collective
@@ -369,7 +369,7 @@ href="https://github.com/trsamp/SEM101/blob/main/data/01PA.txt">Download</a></li
 href="https://github.com/trsamp/SEM101/blob/main/data/01PA.sav">Download</a></li>
 </ul>
 <pre><code>
-TITLE: individual montecarlo
+TITLE: path analysis
 DATA:
   FILE IS data2.txt; !keep all file in the same folder
 
@@ -385,15 +385,15 @@ MODEL: !put the syntax indicate causal relationships
 MODEL INDIRECT:
 TEF IND TFL;
 
-OUTPUT: SAMPSTAT STDYX; !standardized coefficient need to be report
+OUTPUT: SAMPSTAT STDYX; 
 </code></pre>
-<div id="printout" class="section level2">
-<h2>PRINTOUT</h2>
+<div id="printout" class="section level4">
+<h4>PRINTOUT</h4>
 <pre><code>INPUT READING TERMINATED NORMALLY
 
 
 
-individual montecarlo
+path analysis
 
 SUMMARY OF ANALYSIS
 
@@ -653,8 +653,10 @@ Effects from TFL to TEF
     TEF
     TFL                0.092      0.034      2.691      0.007</code></pre>
 </div>
-<div id="diagram-from-mplus" class="section level2">
-<h2>DIAGRAM from Mplus</h2>
+<div id="diagram-from-mplus" class="section level4">
+<h4>DIAGRAM from Mplus</h4>
+</div>
+<div class="col-sm-10">
 <p><a href = "https://crumplab.github.io"> <img
 src="images/PA.png" /></p>
 </div>
@@ -709,7 +711,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1",
+      selectors: "h1,h2,h3,h4,h5",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {

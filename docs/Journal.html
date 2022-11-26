@@ -35,6 +35,10 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -347,6 +351,10 @@ div.tocify {
 </div>
 
 
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
 <div id="section" class="section level1">
 <h1></h1>
 <p>Last compiled: 2022-11-26</p>
@@ -556,7 +564,14 @@ summary(results, standardize=TRUE, fit.measures=TRUE)</code></pre>
 
 semPaths(results,
          whatLabels = &quot;std&quot;,
-         layout = &quot;tree&quot;)</code></pre>
+         layout = &quot;tree&quot;,
+         style = &quot;ram&quot;,
+         rotation = 1,
+         sizeMan = 7,
+         sizeLat = 7,
+         color = &quot;lightgray&quot;,
+         edge.label.cex = 1.2,
+         label.cex = 1.3)</code></pre>
 <p><img src="Journal_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 <div id="structural-equation-model" class="section level1">

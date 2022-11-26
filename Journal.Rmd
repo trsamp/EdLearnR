@@ -11,6 +11,10 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
 ```
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy(position = c('top', 'right'))
+```
+
 
 
 
@@ -99,7 +103,14 @@ library(semPlot)
 
 semPaths(results,
          whatLabels = "std",
-         layout = "tree")
+         layout = "tree",
+         style = "ram",
+         rotation = 1,
+         sizeMan = 7,
+         sizeLat = 7,
+         color = "lightgray",
+         edge.label.cex = 1.2,
+         label.cex = 1.3)
 
 ```
 

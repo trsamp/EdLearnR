@@ -13,7 +13,7 @@
 
 <title>SEM with Lavaan</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -347,13 +347,20 @@ div.tocify {
 </div>
 
 
-<p>IMPORTANT: You can delete everything in here and start fresh. You
-might want to start by not deleting anything above this line until you
-know what that stuff is doing.</p>
-<p>This is an .Rmd file. It is plain text with special features. Any
-time you write just like this, it will be compiled to normal text in the
-website. If you put a # in front of your text, it will create a top
-level-header.</p>
+<p>``{r klippy, echo=FALSE, include=TRUE} klippy::klippy(’’)</p>
+<pre><code>
+## Common use
+
+The `klippy` package enhances `R Markdown` `HTML` documents with **copy to 
+clipboard buttons**. You only have to paste the following chunk anywhere in 
+your `Rmd` file.
+
+Obviously, **you have to try the clipboard button in the upper left corner of this chunk!**
+
+````{#ex .markdown .klippy}
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy()</code></pre>
+<p>````</p>
 <div id="section" class="section level1">
 <h1></h1>
 <p>Last compiled: 2022-11-20</p>

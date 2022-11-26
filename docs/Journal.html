@@ -11,7 +11,7 @@
 
 
 
-<title>SEM TRS</title>
+<title>SEM with lavaan</title>
 
 <script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -342,7 +342,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">SEM TRS</h1>
+<h1 class="title toc-ignore">SEM with lavaan</h1>
 
 </div>
 
@@ -357,7 +357,7 @@ div.tocify {
 <h2>การวิเคราะห์เส้นทางอิทธิพล</h2>
 <p>ตัวอย่างจากบทความวิจัย</p>
 <pre class="r"><code>library(lavaan)
-#correalation from article
+#correlation from article
 regression.cor &lt;- lav_matrix_lower2full(c(1.0,
                                           0.14, 1.0,
                                           0.34, -0.14, 1.0,
@@ -436,6 +436,128 @@ semPaths(regression.fit,
          )</code></pre>
 <p><img src="Journal_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
 </div>
+</div>
+<div id="confirmatory-factor-analysis" class="section level1">
+<h1>Confirmatory Factor Analysis</h1>
+<p>ใช้ตัวอย่างจากบทความวิชาการของ <a
+href="https://drive.google.com/file/d/1XlNeCyZpZDvq8goRQeYWgELrO_QT2Cw7/view">Download</a></p>
+<p>ข้อมูลที่ใช้ในการวิเคราะห์ : correlation matrix จากบทควา</p>
+<pre class="r"><code>library(lavaan)
+
+lower = &#39;
+1.000 
+0.859 1.000 
+0.873 0.882 1.000
+0.816 0.854 0.852 1.000
+0.281 0.319 0.297 0.301 1.000
+0.369 0.363 0.343 0.363 0.628 1.000
+
+ &#39;
+au.cor = getCov(lower, names = c(&quot;sa&quot;, &quot;rt&quot;, &quot;bp&quot;,&quot;imp&quot;, &quot;ao&quot;, &quot;we&quot;))
+au.cor</code></pre>
+<pre><code>##        sa    rt    bp   imp    ao    we
+## sa  1.000 0.859 0.873 0.816 0.281 0.369
+## rt  0.859 1.000 0.882 0.854 0.319 0.363
+## bp  0.873 0.882 1.000 0.852 0.297 0.343
+## imp 0.816 0.854 0.852 1.000 0.301 0.363
+## ao  0.281 0.319 0.297 0.301 1.000 0.628
+## we  0.369 0.363 0.343 0.363 0.628 1.000</code></pre>
+<pre class="r"><code>au.cov = cor2cov(R = au.cor, sds = c(0.629, 0.341, 0.560, 
+                                         0.318,0.284, 0.291 ))
+au.cov</code></pre>
+<pre><code>##             sa         rt         bp        imp         ao         we
+## sa  0.39564100 0.18424605 0.30750552 0.16321795 0.05019672 0.06754139
+## rt  0.18424605 0.11628100 0.16842672 0.09260605 0.03089324 0.03602085
+## bp  0.30750552 0.16842672 0.31360000 0.15172416 0.04723488 0.05589528
+## imp 0.16321795 0.09260605 0.15172416 0.10112400 0.02718391 0.03359129
+## ao  0.05019672 0.03089324 0.04723488 0.02718391 0.08065600 0.05190043
+## we  0.06754139 0.03602085 0.05589528 0.03359129 0.05190043 0.08468100</code></pre>
+<pre class="r"><code>model = &#39;
+           auf =~ sa + rt + bp + imp
+     &#39;
+#summary(onefactor)
+results = sem(model, sample.cov=au.cov, sample.nobs=605)
+summary(results, standardize=TRUE, fit.measures=TRUE)</code></pre>
+<pre><code>## lavaan 0.6-12 ended normally after 31 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                         8
+## 
+##   Number of observations                           605
+## 
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 6.596
+##   Degrees of freedom                                 2
+##   P-value (Chi-square)                           0.037
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              2788.139
+##   Degrees of freedom                                 6
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.998
+##   Tucker-Lewis Index (TLI)                       0.995
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)                -65.721
+##   Loglikelihood unrestricted model (H1)        -62.423
+##                                                       
+##   Akaike (AIC)                                 147.443
+##   Bayesian (BIC)                               182.684
+##   Sample-size adjusted Bayesian (BIC)          157.286
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.062
+##   90 Percent confidence interval - lower         0.013
+##   90 Percent confidence interval - upper         0.117
+##   P-value RMSEA &lt;= 0.05                          0.280
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.005
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   auf =~                                                                
+##     sa                1.000                               0.576    0.917
+##     rt                0.554    0.013   41.403    0.000    0.319    0.938
+##     bp                0.918    0.022   42.514    0.000    0.529    0.945
+##     imp               0.497    0.014   36.824    0.000    0.287    0.902
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##    .sa                0.063    0.005   13.595    0.000    0.063    0.159
+##    .rt                0.014    0.001   12.085    0.000    0.014    0.121
+##    .bp                0.033    0.003   11.259    0.000    0.033    0.106
+##    .imp               0.019    0.001   14.283    0.000    0.019    0.187
+##     auf               0.332    0.023   14.687    0.000    1.000    1.000</code></pre>
+<pre class="r"><code>modificationIndices(results, minimum.value = 0)</code></pre>
+<pre><code>##    lhs op rhs    mi    epc sepc.lv sepc.all sepc.nox
+## 10  sa ~~  rt 0.025  0.000   0.000   -0.011   -0.011
+## 11  sa ~~  bp 5.128  0.008   0.008    0.176    0.176
+## 12  sa ~~ imp 4.665 -0.004  -0.004   -0.124   -0.124
+## 13  rt ~~  bp 4.665 -0.004  -0.004   -0.202   -0.202
+## 14  rt ~~ imp 5.128  0.002   0.002    0.149    0.149
+## 15  bp ~~ imp 0.025  0.000   0.000   -0.011   -0.011</code></pre>
+<pre class="r"><code>library(semPlot)
+
+semPaths(results,
+         whatLabels = &quot;std&quot;,
+         layout = &quot;tree&quot;)</code></pre>
+<p><img src="Journal_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 <div id="structural-equation-model" class="section level1">
 <h1>Structural Equation Model</h1>
@@ -600,9 +722,9 @@ summary(results, standardize=TRUE, fit.measures=TRUE)</code></pre>
 semPaths(results,
          whatLabels = &quot;std&quot;,
          layout = &quot;tree&quot;)</code></pre>
-<p><img src="Journal_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="Journal_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 4.2.1 (2022-06-23 ucrt)
+<pre><code>## R version 4.2.2 (2022-10-31 ucrt)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
 ## Running under: Windows 10 x64 (build 22621)
 ## 
@@ -622,40 +744,39 @@ semPaths(results,
 ## [1] semPlot_1.1.6 lavaan_0.6-12
 ## 
 ## loaded via a namespace (and not attached):
-##   [1] nlme_3.1-157        RColorBrewer_1.1-3  mi_1.1             
-##   [4] tools_4.2.1         backports_1.4.1     bslib_0.4.0        
-##   [7] utf8_1.2.2          R6_2.5.1            rpart_4.1.16       
-##  [10] Hmisc_4.7-1         DBI_1.1.3           colorspace_2.0-3   
-##  [13] nnet_7.3-17         tidyselect_1.2.0    gridExtra_2.3      
-##  [16] mnormt_2.1.1        compiler_4.2.1      fdrtool_1.2.17     
-##  [19] qgraph_1.9.2        cli_3.4.1           htmlTable_2.4.1    
-##  [22] sass_0.4.2          scales_1.2.1        checkmate_2.1.0    
-##  [25] psych_2.2.9         pbapply_1.5-0       sem_3.1-15         
-##  [28] stringr_1.4.1       digest_0.6.29       pbivnorm_0.6.0     
-##  [31] foreign_0.8-83      minqa_1.2.4         rmarkdown_2.17     
-##  [34] base64enc_0.1-3     jpeg_0.1-9          pkgconfig_2.0.3    
-##  [37] htmltools_0.5.3     lme4_1.1-30         lisrelToR_0.1.5    
-##  [40] fastmap_1.1.0       htmlwidgets_1.5.4   rlang_1.0.6        
-##  [43] rstudioapi_0.14     jquerylib_0.1.4     generics_0.1.3     
-##  [46] jsonlite_1.8.2      gtools_3.9.3        dplyr_1.0.10       
-##  [49] zip_2.2.1           magrittr_2.0.3      OpenMx_2.20.6      
-##  [52] Formula_1.2-4       interp_1.1-3        Matrix_1.5-1       
-##  [55] Rcpp_1.0.9          munsell_0.5.0       fansi_1.0.3        
-##  [58] abind_1.4-5         rockchalk_1.8.157   lifecycle_1.0.3    
-##  [61] stringi_1.7.8       yaml_2.3.5          carData_3.0-5      
-##  [64] MASS_7.3-57         plyr_1.8.7          grid_4.2.1         
-##  [67] parallel_4.2.1      deldir_1.0-6        lattice_0.20-45    
-##  [70] kutils_1.70         splines_4.2.1       knitr_1.40         
-##  [73] pillar_1.8.1        igraph_1.3.5        boot_1.3-28        
-##  [76] corpcor_1.6.10      reshape2_1.4.4      stats4_4.2.1       
-##  [79] XML_3.99-0.11       glue_1.6.2          evaluate_0.16      
-##  [82] latticeExtra_0.6-30 RcppParallel_5.1.5  data.table_1.14.2  
-##  [85] png_0.1-7           vctrs_0.4.2         nloptr_2.0.3       
-##  [88] gtable_0.3.1        assertthat_0.2.1    cachem_1.0.6       
-##  [91] ggplot2_3.3.6       xfun_0.33           openxlsx_4.2.5     
-##  [94] xtable_1.8-4        coda_0.19-4         glasso_1.11        
-##  [97] survival_3.3-1      tibble_3.1.8        arm_1.13-1         
-## [100] cluster_2.1.3</code></pre>
+##  [1] nlme_3.1-160        RColorBrewer_1.1-3  mi_1.1             
+##  [4] tools_4.2.2         backports_1.4.1     bslib_0.4.1        
+##  [7] utf8_1.2.2          R6_2.5.1            rpart_4.1.19       
+## [10] Hmisc_4.7-1         colorspace_2.0-3    nnet_7.3-18        
+## [13] gridExtra_2.3       mnormt_2.1.1        compiler_4.2.2     
+## [16] qgraph_1.9.2        fdrtool_1.2.17      cli_3.4.1          
+## [19] htmlTable_2.4.1     sass_0.4.2          scales_1.2.1       
+## [22] checkmate_2.1.0     psych_2.2.9         pbapply_1.6-0      
+## [25] sem_3.1-15          stringr_1.4.1       digest_0.6.30      
+## [28] pbivnorm_0.6.0      foreign_0.8-83      minqa_1.2.5        
+## [31] rmarkdown_2.18      base64enc_0.1-3     jpeg_0.1-9         
+## [34] pkgconfig_2.0.3     htmltools_0.5.3     lme4_1.1-31        
+## [37] lisrelToR_0.1.5     highr_0.9           fastmap_1.1.0      
+## [40] htmlwidgets_1.5.4   rlang_1.0.6         rstudioapi_0.14    
+## [43] jquerylib_0.1.4     jsonlite_1.8.3      gtools_3.9.3       
+## [46] zip_2.2.2           magrittr_2.0.3      OpenMx_2.20.7      
+## [49] Formula_1.2-4       interp_1.1-3        Matrix_1.5-1       
+## [52] Rcpp_1.0.9          munsell_0.5.0       fansi_1.0.3        
+## [55] abind_1.4-5         rockchalk_1.8.157   lifecycle_1.0.3    
+## [58] stringi_1.7.8       yaml_2.3.6          carData_3.0-5      
+## [61] MASS_7.3-58.1       plyr_1.8.8          grid_4.2.2         
+## [64] parallel_4.2.2      deldir_1.0-6        lattice_0.20-45    
+## [67] kutils_1.70         splines_4.2.2       knitr_1.41         
+## [70] pillar_1.8.1        igraph_1.3.5        boot_1.3-28        
+## [73] corpcor_1.6.10      codetools_0.2-18    reshape2_1.4.4     
+## [76] stats4_4.2.2        XML_3.99-0.12       glue_1.6.2         
+## [79] evaluate_0.18       latticeExtra_0.6-30 RcppParallel_5.1.5 
+## [82] data.table_1.14.4   png_0.1-7           vctrs_0.5.0        
+## [85] nloptr_2.0.3        gtable_0.3.1        cachem_1.0.6       
+## [88] ggplot2_3.4.0       xfun_0.34           openxlsx_4.2.5.1   
+## [91] xtable_1.8-4        coda_0.19-4         survival_3.4-0     
+## [94] glasso_1.11         tibble_3.1.8        arm_1.13-1         
+## [97] cluster_2.1.4</code></pre>
 </div>
 
 

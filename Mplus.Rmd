@@ -320,10 +320,8 @@ Effects from TFL to TEF
 ```
 
 #### DIAGRAM : Path Analysis
-</div>
-<div class="col-sm-10">
-<a href = "https://trsamp.github.io/docs">
-![](images/PA.png)
+
+![Path](images/PA.png)
 
 
 
@@ -624,11 +622,8 @@ TECHNICAL 4 OUTPUT
 ```
 
 #### DIAGRAM : CFA
-</div>
-<div class="col-sm-10">
-<a href = "https://trsamp.github.io/docs">
-![](images/CFA.png)
 
+![CFA](images/CFA.png)
 
 ## 3.Structural Equation Modeling
 
@@ -1067,7 +1062,6 @@ TECHNICAL 4 OUTPUT
 
 
 #### DIAGRAM : SEM
-</div>
-<div class="col-sm-10">
-<a href = "https://trsamp.github.io/docs">
-![](images/SEM.png)
+
+
+![SEM](images/SEM.png)

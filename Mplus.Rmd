@@ -25,7 +25,7 @@ Last compiled: `r Sys.Date()`
 
 ## 1.Path analysis
 
-Reading assignment : Kurt, T., Duyar, I., & Calik, T. (2012). Are we legitimate yet? A closer look at the casual relationship mechanisms among principal leadership, teacher self‐efficacy and collective efficacy. Journal of Management Development, 31, 71-86. 
+- Reading assignment : Kurt, T., Duyar, I., & Calik, T. (2012). Are we legitimate yet? A closer look at the casual relationship mechanisms among principal leadership, teacher self‐efficacy and collective efficacy. Journal of Management Development, 31, 71-86. 
 
 - Data in .txt format [Download](https://github.com/trsamp/SEM101/blob/main/data/01PA.txt)
 - Data in SPSS format [Download](https://github.com/trsamp/SEM101/blob/main/data/01PA.sav)
@@ -328,8 +328,7 @@ Effects from TFL to TEF
 
 
 ## 2.Confirmatory Factor Analysis
-
-Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A., & Wongwanich, S. (2018). Exploring the effects of authentic leadership on academic optimism and teacher engagement in Thailand. International Journal of Educational Management, 32(1), 27-45. https://doi.org/10.1108/IJEM-10-2016-0233
+- Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A., & Wongwanich, S. (2018). Exploring the effects of authentic leadership on academic optimism and teacher engagement in Thailand. International Journal of Educational Management, 32(1), 27-45. https://doi.org/10.1108/IJEM-10-2016-0233
 
 - Data in SPSS format [Download](https://github.com/trsamp/SEM101/blob/main/data/03SEM.sav)
 
@@ -633,7 +632,7 @@ TECHNICAL 4 OUTPUT
 
 ## 3.Structural Equation Modeling
 
-Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A., & Wongwanich, S. (2018). Exploring the effects of authentic leadership on academic optimism and teacher engagement in Thailand. International Journal of Educational Management, 32(1), 27-45. https://doi.org/10.1108/IJEM-10-2016-0233
+- Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A., & Wongwanich, S. (2018). Exploring the effects of authentic leadership on academic optimism and teacher engagement in Thailand. International Journal of Educational Management, 32(1), 27-45. https://doi.org/10.1108/IJEM-10-2016-0233
 
 - Data in SPSS format [Download](https://github.com/trsamp/SEM101/blob/main/data/03SEM.sav)
 

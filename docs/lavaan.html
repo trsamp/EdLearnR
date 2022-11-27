@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>SEM with lavaan</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SEM101</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="lavaan.html">Lavaan</a>
+</li>
+<li>
+  <a href="Mplus.html">Mplus</a>
+</li>
+<li>
+  <a href="Links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">SEM with lavaan</h1>
+
+</div>
+
+
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<p>Last compiled: 2022-11-27</p>
+<div id="path-analysis" class="section level1">
+<h1>Path analysis</h1>
+<p>Reading assignment : Kurt, T., Duyar, I., &amp; Calik, T. (2012). Are
+we legitimate yet? A closer look at the casual relationship mechanisms
+among principal leadership, teacher self‐efficacy and collective
+efficacy. Journal of Management Development, 31, 71-86.</p>
+<ul>
+<li>Data in .txt format <a
+href="https://github.com/trsamp/SEM101/blob/main/data/01PA.txt">Download</a></li>
+<li>Data in SPSS format <a
+href="https://github.com/trsamp/SEM101/blob/main/data/01PA.sav">Download</a></li>
+</ul>
+<pre class="r"><code>library(lavaan)
+#correlation from article
+regression.cor &lt;- lav_matrix_lower2full(c(1.0,
+                                          0.14, 1.0,
+                                          0.34, -0.14, 1.0,
+                                          0.23, -0.03, 0.43, 1.0))
+                                          
+colnames(regression.cor) &lt;- rownames(regression.cor) &lt;- c(&quot;TFL&quot;, &quot;TSL&quot;, &quot;CTE&quot;,&quot;TEF&quot;)
+regression.cor</code></pre>
+<pre><code>##      TFL   TSL   CTE   TEF
+## TFL 1.00  0.14  0.34  0.23
+## TSL 0.14  1.00 -0.14 -0.03
+## CTE 0.34 -0.14  1.00  0.43
+## TEF 0.23 -0.03  0.43  1.00</code></pre>
+<pre class="r"><code>#model syntax
+regression.model &lt;- &#39;
+TEF ~ TFL + TSL + CTE
+CTE ~ TFL + TSL
+&#39;
+#model fit
+regression.fit &lt;- sem(regression.model, sample.cov = regression.cor, sample.nobs = 813)
+summary(regression.fit, rsquare = TRUE)</code></pre>
+<pre><code>## lavaan 0.6-12 ended normally after 1 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                         7
+## 
+##   Number of observations                           813
+## 
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 0.000
+##   Degrees of freedom                                 0
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##   TEF ~                                               
+##     TFL               0.092    0.034    2.688    0.007
+##     TSL               0.013    0.032    0.407    0.684
+##     CTE               0.401    0.034   11.712    0.000
+##   CTE ~                                               
+##     TFL               0.367    0.033   11.242    0.000
+##     TSL              -0.191    0.033   -5.865    0.000
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)
+##    .TEF               0.806    0.040   20.162    0.000
+##    .CTE               0.847    0.042   20.162    0.000
+## 
+## R-Square:
+##                    Estimate
+##     TEF               0.193
+##     CTE               0.151</code></pre>
+<pre class="r"><code>#diagram
+library(semPlot)
+semPaths(regression.fit,
+         whatLabels=&quot;STDE&quot;,
+         layout = &quot;tree&quot;)</code></pre>
+<p><img src="lavaan_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>#adjust path
+semPaths(regression.fit,
+         whatLabels=&quot;STDE&quot;,
+         layout = &quot;tree&quot;,
+         style = &quot;ram&quot;,
+         rotation = 1,
+         sizeMan = 7,
+         sizeLat = 7,
+         color = &quot;lightgray&quot;,
+         edge.label.cex = 1.2,
+         label.cex = 1.3
+         )</code></pre>
+<p><img src="lavaan_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+</div>
+<div id="confirmatory-factor-analysis" class="section level1">
+<h1>Confirmatory Factor Analysis</h1>
+<p>Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A.,
+&amp; Wongwanich, S. (2018). Exploring the effects of authentic
+leadership on academic optimism and teacher engagement in Thailand.
+International Journal of Educational Management, 32(1), 27-45. <a
+href="https://doi.org/10.1108/IJEM-10-2016-0233"
+class="uri">https://doi.org/10.1108/IJEM-10-2016-0233</a></p>
+<ul>
+<li>Data in SPSS format <a
+href="https://github.com/trsamp/SEM101/blob/main/data/03SEM.sav">Download</a></li>
+</ul>
+<pre class="r"><code>library(lavaan)
+
+lower = &#39;
+1.000 
+0.859 1.000 
+0.873 0.882 1.000
+0.816 0.854 0.852 1.000
+0.281 0.319 0.297 0.301 1.000
+0.369 0.363 0.343 0.363 0.628 1.000
+
+ &#39;
+au.cor = getCov(lower, names = c(&quot;sa&quot;, &quot;rt&quot;, &quot;bp&quot;,&quot;imp&quot;, &quot;ao&quot;, &quot;we&quot;))
+au.cor</code></pre>
+<pre><code>##        sa    rt    bp   imp    ao    we
+## sa  1.000 0.859 0.873 0.816 0.281 0.369
+## rt  0.859 1.000 0.882 0.854 0.319 0.363
+## bp  0.873 0.882 1.000 0.852 0.297 0.343
+## imp 0.816 0.854 0.852 1.000 0.301 0.363
+## ao  0.281 0.319 0.297 0.301 1.000 0.628
+## we  0.369 0.363 0.343 0.363 0.628 1.000</code></pre>
+<pre class="r"><code>au.cov = cor2cov(R = au.cor, sds = c(0.629, 0.341, 0.560, 
+                                         0.318,0.284, 0.291 ))
+au.cov</code></pre>
+<pre><code>##             sa         rt         bp        imp         ao         we
+## sa  0.39564100 0.18424605 0.30750552 0.16321795 0.05019672 0.06754139
+## rt  0.18424605 0.11628100 0.16842672 0.09260605 0.03089324 0.03602085
+## bp  0.30750552 0.16842672 0.31360000 0.15172416 0.04723488 0.05589528
+## imp 0.16321795 0.09260605 0.15172416 0.10112400 0.02718391 0.03359129
+## ao  0.05019672 0.03089324 0.04723488 0.02718391 0.08065600 0.05190043
+## we  0.06754139 0.03602085 0.05589528 0.03359129 0.05190043 0.08468100</code></pre>
+<pre class="r"><code>model = &#39;
+           auf =~ sa + rt + bp + imp
+     &#39;
+#summary(onefactor)
+results = sem(model, sample.cov=au.cov, sample.nobs=605)
+summary(results, standardize=TRUE, fit.measures=TRUE)</code></pre>
+<pre><code>## lavaan 0.6-12 ended normally after 31 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                         8
+## 
+##   Number of observations                           605
+## 
+## Model Test User Model:
+##                                                       
+##   Test statistic                                 6.596
+##   Degrees of freedom                                 2
+##   P-value (Chi-square)                           0.037
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              2788.139
+##   Degrees of freedom                                 6
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.998
+##   Tucker-Lewis Index (TLI)                       0.995
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)                -65.721
+##   Loglikelihood unrestricted model (H1)        -62.423
+##                                                       
+##   Akaike (AIC)                                 147.443
+##   Bayesian (BIC)                               182.684
+##   Sample-size adjusted Bayesian (BIC)          157.286
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.062
+##   90 Percent confidence interval - lower         0.013
+##   90 Percent confidence interval - upper         0.117
+##   P-value RMSEA &lt;= 0.05                          0.280
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.005
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   auf =~                                                                
+##     sa                1.000                               0.576    0.917
+##     rt                0.554    0.013   41.403    0.000    0.319    0.938
+##     bp                0.918    0.022   42.514    0.000    0.529    0.945
+##     imp               0.497    0.014   36.824    0.000    0.287    0.902
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##    .sa                0.063    0.005   13.595    0.000    0.063    0.159
+##    .rt                0.014    0.001   12.085    0.000    0.014    0.121
+##    .bp                0.033    0.003   11.259    0.000    0.033    0.106
+##    .imp               0.019    0.001   14.283    0.000    0.019    0.187
+##     auf               0.332    0.023   14.687    0.000    1.000    1.000</code></pre>
+<pre class="r"><code>modificationIndices(results, minimum.value = 0)</code></pre>
+<pre><code>##    lhs op rhs    mi    epc sepc.lv sepc.all sepc.nox
+## 10  sa ~~  rt 0.025  0.000   0.000   -0.011   -0.011
+## 11  sa ~~  bp 5.128  0.008   0.008    0.176    0.176
+## 12  sa ~~ imp 4.665 -0.004  -0.004   -0.124   -0.124
+## 13  rt ~~  bp 4.665 -0.004  -0.004   -0.202   -0.202
+## 14  rt ~~ imp 5.128  0.002   0.002    0.149    0.149
+## 15  bp ~~ imp 0.025  0.000   0.000   -0.011   -0.011</code></pre>
+<pre class="r"><code>library(semPlot)
+
+semPaths(results,
+         whatLabels = &quot;std&quot;,
+         layout = &quot;tree&quot;,
+         style = &quot;ram&quot;,
+         rotation = 1,
+         sizeMan = 7,
+         sizeLat = 7,
+         color = &quot;lightgray&quot;,
+         edge.label.cex = 1.2,
+         label.cex = 1.3)</code></pre>
+<p><img src="lavaan_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+</div>
+<div id="structural-equation-model" class="section level1">
+<h1>Structural Equation Model</h1>
+<p>Reading assignment : Kulophas, D., Hallinger, P., Ruengtrakul, A.,
+&amp; Wongwanich, S. (2018). Exploring the effects of authentic
+leadership on academic optimism and teacher engagement in Thailand.
+International Journal of Educational Management, 32(1), 27-45. <a
+href="https://doi.org/10.1108/IJEM-10-2016-0233"
+class="uri">https://doi.org/10.1108/IJEM-10-2016-0233</a></p>
+<ul>
+<li>Data in SPSS format <a
+href="https://github.com/trsamp/SEM101/blob/main/data/03SEM.sav">Download</a></li>
+</ul>
+<pre class="r"><code>library(lavaan)
+
+lower = &#39;
+1.000 
+0.859 1.000 
+0.873 0.882 1.000
+0.816 0.854 0.852 1.000
+0.281 0.319 0.297 0.301 1.000
+0.369 0.363 0.343 0.363 0.628 1.000
+
+ &#39;
+au.cor = getCov(lower, names = c(&quot;sa&quot;, &quot;rt&quot;, &quot;bp&quot;,&quot;imp&quot;, &quot;ao&quot;, &quot;we&quot;))
+au.cor</code></pre>
+<pre><code>##        sa    rt    bp   imp    ao    we
+## sa  1.000 0.859 0.873 0.816 0.281 0.369
+## rt  0.859 1.000 0.882 0.854 0.319 0.363
+## bp  0.873 0.882 1.000 0.852 0.297 0.343
+## imp 0.816 0.854 0.852 1.000 0.301 0.363
+## ao  0.281 0.319 0.297 0.301 1.000 0.628
+## we  0.369 0.363 0.343 0.363 0.628 1.000</code></pre>
+<pre class="r"><code>au.cov = cor2cov(R = au.cor, sds = c(0.629, 0.341, 0.560, 
+                                         0.318,0.284, 0.291 ))
+au.cov</code></pre>
+<pre><code>##             sa         rt         bp        imp         ao         we
+## sa  0.39564100 0.18424605 0.30750552 0.16321795 0.05019672 0.06754139
+## rt  0.18424605 0.11628100 0.16842672 0.09260605 0.03089324 0.03602085
+## bp  0.30750552 0.16842672 0.31360000 0.15172416 0.04723488 0.05589528
+## imp 0.16321795 0.09260605 0.15172416 0.10112400 0.02718391 0.03359129
+## ao  0.05019672 0.03089324 0.04723488 0.02718391 0.08065600 0.05190043
+## we  0.06754139 0.03602085 0.05589528 0.03359129 0.05190043 0.08468100</code></pre>
+<pre class="r"><code>model = &#39;
+           auf =~ sa + rt + bp + imp
+         aof =~ ao
+         wef =~ we
+         wef~ aof + auf
+         aof ~ auf
+         ao ~~ .01*ao
+         we ~~ .01*we
+         sa ~~ bp
+     &#39;
+#summary(onefactor)
+results = sem(model, sample.cov=au.cov, sample.nobs=605)
+summary(results, standardize=TRUE, fit.measures=TRUE)</code></pre>
+<pre><code>## lavaan 0.6-12 ended normally after 51 iterations
+## 
+##   Estimator                                         ML
+##   Optimization method                           NLMINB
+##   Number of model parameters                        14
+## 
+##   Number of observations                           605
+## 
+## Model Test User Model:
+##                                                       
+##   Test statistic                                12.320
+##   Degrees of freedom                                 7
+##   P-value (Chi-square)                           0.091
+## 
+## Model Test Baseline Model:
+## 
+##   Test statistic                              3203.520
+##   Degrees of freedom                                15
+##   P-value                                        0.000
+## 
+## User Model versus Baseline Model:
+## 
+##   Comparative Fit Index (CFI)                    0.998
+##   Tucker-Lewis Index (TLI)                       0.996
+## 
+## Loglikelihood and Information Criteria:
+## 
+##   Loglikelihood user model (H0)                -68.414
+##   Loglikelihood unrestricted model (H1)        -62.254
+##                                                       
+##   Akaike (AIC)                                 164.827
+##   Bayesian (BIC)                               226.501
+##   Sample-size adjusted Bayesian (BIC)          182.054
+## 
+## Root Mean Square Error of Approximation:
+## 
+##   RMSEA                                          0.035
+##   90 Percent confidence interval - lower         0.000
+##   90 Percent confidence interval - upper         0.067
+##   P-value RMSEA &lt;= 0.05                          0.739
+## 
+## Standardized Root Mean Square Residual:
+## 
+##   SRMR                                           0.008
+## 
+## Parameter Estimates:
+## 
+##   Standard errors                             Standard
+##   Information                                 Expected
+##   Information saturated (h1) model          Structured
+## 
+## Latent Variables:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   auf =~                                                                
+##     sa                1.000                               0.570    0.907
+##     rt                0.564    0.014   39.206    0.000    0.322    0.944
+##     bp                0.919    0.021   43.243    0.000    0.524    0.936
+##     imp               0.505    0.014   35.483    0.000    0.288    0.906
+##   aof =~                                                                
+##     ao                1.000                               0.266    0.936
+##   wef =~                                                                
+##     we                1.000                               0.273    0.939
+## 
+## Regressions:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   wef ~                                                                 
+##     aof               0.668    0.039   17.040    0.000    0.650    0.650
+##     auf               0.089    0.017    5.069    0.000    0.185    0.185
+##   aof ~                                                                 
+##     auf               0.162    0.020    8.200    0.000    0.349    0.349
+## 
+## Covariances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##  .sa ~~                                                                 
+##    .bp                0.008    0.004    2.283    0.022    0.008    0.161
+## 
+## Variances:
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##    .ao                0.010                               0.010    0.124
+##    .we                0.010                               0.010    0.118
+##    .sa                0.070    0.006   12.233    0.000    0.070    0.177
+##    .rt                0.013    0.001   10.154    0.000    0.013    0.110
+##    .bp                0.039    0.004   10.400    0.000    0.039    0.124
+##    .imp               0.018    0.001   13.648    0.000    0.018    0.179
+##     auf               0.325    0.023   14.309    0.000    1.000    1.000
+##    .aof               0.062    0.004   14.897    0.000    0.878    0.878
+##    .wef               0.034    0.003   12.198    0.000    0.459    0.459</code></pre>
+<pre class="r"><code>modificationIndices(results, minimum.value = 0)</code></pre>
+<pre><code>##    lhs op rhs    mi    epc sepc.lv sepc.all sepc.nox
+## 22 aof =~  sa 0.389 -0.031  -0.008   -0.013   -0.013
+## 23 aof =~  rt 0.945  0.024   0.006    0.019    0.019
+## 24 aof =~  bp 0.608 -0.031  -0.008   -0.015   -0.015
+## 25 aof =~ imp 0.212  0.012   0.003    0.010    0.010
+## 27 wef =~  sa 1.621  0.063   0.017    0.027    0.027
+## 28 wef =~  rt 0.000  0.000   0.000    0.000    0.000
+## 29 wef =~  bp 3.297 -0.072  -0.020   -0.035   -0.035
+## 30 wef =~ imp 0.782  0.023   0.006    0.020    0.020
+## 32  sa ~~  rt 1.268  0.003   0.003    0.089    0.089
+## 33  sa ~~ imp 1.862 -0.003  -0.003   -0.081   -0.081
+## 34  sa ~~  ao 4.744 -0.005  -0.005   -0.206   -0.206
+## 35  sa ~~  we 6.261  0.006   0.006    0.237    0.237
+## 36  rt ~~  bp 0.819 -0.002  -0.002   -0.087   -0.087
+## 37  rt ~~ imp 0.832 -0.003  -0.003   -0.222   -0.222
+## 38  rt ~~  ao 2.079  0.002   0.002    0.160    0.160
+## 39  rt ~~  we 0.956 -0.001  -0.001   -0.109   -0.109
+## 40  bp ~~ imp 2.038  0.003   0.003    0.103    0.103
+## 41  bp ~~  ao 0.405  0.001   0.001    0.064    0.064
+## 42  bp ~~  we 3.650 -0.004  -0.004   -0.194   -0.194
+## 43 imp ~~  ao 0.036  0.000   0.000   -0.019   -0.019
+## 44 imp ~~  we 0.726  0.001   0.001    0.085    0.085</code></pre>
+<pre class="r"><code>library(semPlot)
+
+semPaths(results,
+         whatLabels = &quot;std&quot;,
+         layout = &quot;tree&quot;)</code></pre>
+<p><img src="lavaan_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.2.2 (2022-10-31 ucrt)
+## Platform: x86_64-w64-mingw32/x64 (64-bit)
+## Running under: Windows 10 x64 (build 22621)
+## 
+## Matrix products: default
+## 
+## locale:
+## [1] LC_COLLATE=English_United States.utf8 
+## [2] LC_CTYPE=English_United States.utf8   
+## [3] LC_MONETARY=English_United States.utf8
+## [4] LC_NUMERIC=C                          
+## [5] LC_TIME=English_United States.utf8    
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] semPlot_1.1.6 lavaan_0.6-12
+## 
+## loaded via a namespace (and not attached):
+##   [1] nlme_3.1-160        RColorBrewer_1.1-3  mi_1.1             
+##   [4] tools_4.2.2         backports_1.4.1     bslib_0.4.1        
+##   [7] utf8_1.2.2          R6_2.5.1            rpart_4.1.19       
+##  [10] Hmisc_4.7-1         colorspace_2.0-3    nnet_7.3-18        
+##  [13] tidyselect_1.2.0    gridExtra_2.3       mnormt_2.1.1       
+##  [16] compiler_4.2.2      qgraph_1.9.2        fdrtool_1.2.17     
+##  [19] cli_3.4.1           htmlTable_2.4.1     sass_0.4.2         
+##  [22] scales_1.2.1        checkmate_2.1.0     psych_2.2.9        
+##  [25] pbapply_1.6-0       sem_3.1-15          stringr_1.4.1      
+##  [28] digest_0.6.30       pbivnorm_0.6.0      foreign_0.8-83     
+##  [31] minqa_1.2.5         rmarkdown_2.18      base64enc_0.1-3    
+##  [34] jpeg_0.1-9          pkgconfig_2.0.3     htmltools_0.5.3    
+##  [37] lme4_1.1-31         lisrelToR_0.1.5     highr_0.9          
+##  [40] fastmap_1.1.0       htmlwidgets_1.5.4   rlang_1.0.6        
+##  [43] rstudioapi_0.14     jquerylib_0.1.4     generics_0.1.3     
+##  [46] jsonlite_1.8.3      gtools_3.9.3        dplyr_1.0.10       
+##  [49] zip_2.2.2           magrittr_2.0.3      OpenMx_2.20.7      
+##  [52] Formula_1.2-4       interp_1.1-3        Matrix_1.5-1       
+##  [55] Rcpp_1.0.9          munsell_0.5.0       fansi_1.0.3        
+##  [58] abind_1.4-5         rockchalk_1.8.157   lifecycle_1.0.3    
+##  [61] stringi_1.7.8       yaml_2.3.6          carData_3.0-5      
+##  [64] MASS_7.3-58.1       plyr_1.8.8          grid_4.2.2         
+##  [67] parallel_4.2.2      deldir_1.0-6        lattice_0.20-45    
+##  [70] kutils_1.70         splines_4.2.2       klippy_0.0.0.9500  
+##  [73] knitr_1.41          pillar_1.8.1        igraph_1.3.5       
+##  [76] boot_1.3-28         corpcor_1.6.10      codetools_0.2-18   
+##  [79] reshape2_1.4.4      stats4_4.2.2        XML_3.99-0.12      
+##  [82] glue_1.6.2          evaluate_0.18       latticeExtra_0.6-30
+##  [85] RcppParallel_5.1.5  data.table_1.14.4   png_0.1-7          
+##  [88] vctrs_0.5.0         nloptr_2.0.3        gtable_0.3.1       
+##  [91] assertthat_0.2.1    cachem_1.0.6        ggplot2_3.4.0      
+##  [94] xfun_0.34           openxlsx_4.2.5.1    xtable_1.8-4       
+##  [97] coda_0.19-4         glasso_1.11         survival_3.4-0     
+## [100] tibble_3.1.8        arm_1.13-1          cluster_2.1.4</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

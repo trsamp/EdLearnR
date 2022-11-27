@@ -36,7 +36,7 @@ This is a template example for lab journaling. Students in Matt Crump's Human Co
 <div class="col-sm-6">
 
 
-<a href = "https://crumplab.github.io">
+<a href = "https://trsamp.github.io">
 ![](images/logo.png)
 </a>
 </div>

@@ -322,7 +322,7 @@ Effects from TFL to TEF
 #### DIAGRAM : Path Analysis
 </div>
 <div class="col-sm-10">
-<a href = "https://crumplab.github.io">
+<a href = "https://trsamp.github.io">
 ![](images/PA.png)
 
 
@@ -627,7 +627,7 @@ TECHNICAL 4 OUTPUT
 #### DIAGRAM : CFA
 </div>
 <div class="col-sm-10">
-<a href = "https://crumplab.github.io">
+<a href = "https://trsamp.github.io">
 ![](images/CFA.png)
 
 
@@ -1070,5 +1070,5 @@ TECHNICAL 4 OUTPUT
 #### DIAGRAM : SEM
 </div>
 <div class="col-sm-10">
-<a href = "https://crumplab.github.io">
+<a href = "https://trsamp.github.io">
 ![](images/SEM.png)

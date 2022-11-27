@@ -323,7 +323,7 @@ Effects from TFL to TEF
 </div>
 <div class="col-sm-10">
 <a href = "https://crumplab.github.io">
-[](images/PA.png)
+![](images/PA.png)
 
 
 
@@ -628,7 +628,7 @@ TECHNICAL 4 OUTPUT
 </div>
 <div class="col-sm-10">
 <a href = "https://crumplab.github.io">
-[](images/CFA.png)
+![](images/CFA.png)
 
 
 ## 3.Structural Equation Modeling
@@ -1071,4 +1071,4 @@ TECHNICAL 4 OUTPUT
 </div>
 <div class="col-sm-10">
 <a href = "https://crumplab.github.io">
-[](images/CFA.png)
+![](images/SEM.png)

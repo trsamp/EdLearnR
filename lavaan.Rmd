@@ -20,6 +20,12 @@ klippy::klippy(position = c('top', 'right'))
 
 
 Last compiled: `r Sys.Date()`
+# Basic R
+
+ตรวจสอบตำแหน่ง
+```{r}
+getwd()
+```
 
 
 # Path analysis

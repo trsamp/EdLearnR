@@ -19,112 +19,97 @@ knitr::opts_chunk$set(message=FALSE,warning=FALSE, cache=TRUE)
 klippy::klippy(position = c('top', 'right'))
 ```
 
-
 Last compiled: `r Sys.Date()`
-Credit: http://www.sthda.com/english/wiki/ggplot2-quick-correlation-matrix-heatmap-r-software-and-data-visualization#compute-the-correlation-matrix
+
+## ggPlot
 
 ```{r}
-library(ggplot2)
-cormat <- round(cor(Hai_22Oct),2)
-head(cormat)
 
 library(heatmaply)
+# install.packages("heatmaply")
+dataset = read.csv("D:/OneDrive/00Recent Draft/HAI64/Rgrowth/hmg.csv", 
+                   row.names = "Provinces")
+
+print(dataset)
+#https://www.youtube.com/watch?v=vnU0AGzqq4s
+
+# The mtcars dataset:
+m <- as.matrix(dataset)
+
+# Default Heatmap
+heatmap(m)
+heatmap(m, scale="column")
+heatmap(m, Colv = NA, Rowv = NA, scale="column")
+
 library(RColorBrewer)
-heatmaply_cor(
-  cor(Hai_22Oct),
-  xlab = " ",
-  ylab = " ",
-  colors = viridis(n = 256,  option = "magma"),
-  k_col = 2,
-  k_row = 2,
-  Rowv = NA, Colv = NA,
- )
+coul <- colorRampPalette(brewer.pal(8, "PiYG"))(25)
+heatmap(m, scale="column", col = coul)
 
 
+heatmap(m, scale="column", col = cm.colors(256))
+heatmap(m, scale="column", col = terrain.colors(256))
+
+heatmap(m, Colv = NA, Rowv = NA, scale="column", col = terrain.colors(256))
 ```
+
+## Scatter plot 
+scatterplot https://r-graph-gallery.com/275-add-text-labels-with-ggplot2.html
+
 ```{r}
-# Melt the correlation matrix
-library(reshape2)
-melted_cormat <- melt(cormat)
-head(melted_cormat)
+
+head(dataset)
 library(ggplot2)
-ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
-  geom_tile()
+
+ggplot(dataset, aes(x= ONET64, y=HAI64)) +
+  geom_point() + # Show dots
+  geom_text(
+    label=rownames(dataset), 
+    nudge_x = 0.25, nudge_y = 0.25, 
+    check_overlap = T
+  )
 ```
-```{r}
-# Get lower triangle of the correlation matrix
-  get_lower_tri<-function(cormat){
-    cormat[upper.tri(cormat)] <- NA
-    return(cormat)
-  }
-  # Get upper triangle of the correlation matrix
-  get_upper_tri <- function(cormat){
-    cormat[lower.tri(cormat)]<- NA
-    return(cormat)
-  }
-  
-upper_tri <- get_upper_tri(cormat)
-upper_tri
-```
+## Boxplot
 
 ```{r}
-# Melt the correlation matrix
-library(reshape2)
-melted_cormat <- melt(upper_tri, na.rm = TRUE)
-# Heatmap
-library(ggplot2)
-ggplot(data = melted_cormat, aes(Var2, Var1, fill = value))+
- geom_tile(color = "white")+
- scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
-   midpoint = 0, limit = c(-1,1), space = "Lab", 
-   name="Pearson\nCorrelation") +
-  theme_minimal()+ 
- theme(axis.text.x = element_text(angle = 45, vjust = 1, 
-    size = 12, hjust = 1))+
- coord_fixed()
+library(tidyverse)
+library(hrbrthemes)
+library(viridis)
+
+data = read.csv("D:/OneDrive/00Recent Draft/HAI64/Rgrowth/boxplot.csv")
+print(data)
+head(data)
+
+sapply(data, class)
+```
+```{r}
+year <- as.character(data)
+class(year)
+sapply(data, class)
+data$Year <- as.character(data$Year)
+sapply(data, class)
+```
+```{r}
+library(tidyverse)
+library(hrbrthemes)
+library(viridis)
+data = read.csv("D:/OneDrive/00Recent Draft/HAI64/Rgrowth/boxplot.csv")
+head(data)
+sapply(data, class)
+
+data$Year <- as.character(data$Year)
+sapply(data, class)
+
+data %>%
+  ggplot(aes(x=Year, y=ONET, fill= Year)) +
+  geom_boxplot() +
+  scale_color_grey(start = 0, end = .9) +
+  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  theme_ipsum() +
+  theme(
+    legend.position="none",
+    plot.title = element_text(size=11)
+  )  +
+scale_fill_grey(start = .3, end = .8)
 ```
 
-```{r}
-reorder_cormat <- function(cormat){
-# Use correlation between variables as distance
-dd <- as.dist((1-cormat)/2)
-hc <- hclust(dd)
-cormat <-cormat[hc$order, hc$order]
-}
-```
-```{r}
-# Reorder the correlation matrix
-cormat <- reorder_cormat(cormat)
-upper_tri <- get_upper_tri(cormat)
-# Melt the correlation matrix
-melted_cormat <- melt(upper_tri, na.rm = TRUE)
-# Create a ggheatmap
-ggheatmap <- ggplot(melted_cormat, aes(Var2, Var1, fill = value))+
- geom_tile(color = "white")+
- scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
-   midpoint = 0, limit = c(-1,1), space = "Lab", 
-    name="Pearson\nCorrelation") +
-  theme_minimal()+ # minimal theme
- theme(axis.text.x = element_text(angle = 45, vjust = 1, 
-    size = 12, hjust = 1))+
- coord_fixed()
-# Print the heatmap
-print(ggheatmap)
-```
-```{r}
-ggheatmap + 
-geom_text(aes(Var2, Var1, label = value), color = "black", size = 4) +
-theme(
-  axis.title.x = element_blank(),
-  axis.title.y = element_blank(),
-  panel.grid.major = element_blank(),
-  panel.border = element_blank(),
-  panel.background = element_blank(),
-  axis.ticks = element_blank(),
-  legend.justification = c(1, 0),
-  legend.position = c(0.6, 0.7),
-  legend.direction = "horizontal")+
-  guides(fill = guide_colorbar(barwidth = 7, barheight = 1,
-                title.position = "top", title.hjust = 0.5))
-```
 

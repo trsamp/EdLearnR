@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Heatmap</title>
+
+<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/clipboard-1.7.1/clipboard.min.js"></script>
+<link href="site_libs/primer-tooltips-1.4.0/build.css" rel="stylesheet" />
+<link href="site_libs/klippy-0.0.0.9500/css/klippy.min.css" rel="stylesheet" />
+<script src="site_libs/klippy-0.0.0.9500/js/klippy.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">SEM101</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="lavaan.html">Lavaan</a>
+</li>
+<li>
+  <a href="Mplus.html">Mplus</a>
+</li>
+<li>
+  <a href="Links.html">Links</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Heatmap</h1>
+
+</div>
+
+
+<script>
+  addClassKlippyTo("pre.r, pre.markdown");
+  addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
+</script>
+<p>Last compiled: 2022-12-13</p>
+<div id="ggplot" class="section level2">
+<h2>ggPlot</h2>
+<pre class="r"><code>library(heatmaply)
+# install.packages(&quot;heatmaply&quot;)
+dataset = read.csv(&quot;D:/OneDrive/00Recent Draft/HAI64/Rgrowth/hmg.csv&quot;, 
+                   row.names = &quot;Provinces&quot;)
+
+print(dataset)</code></pre>
+<pre><code>##                         HAI61     HAI62     HAI63     HAI64 ONET61 ONET62
+## Samut Prakan        0.6076119 0.6141880 0.6234185 0.6111405  37.15  33.85
+## Nonthaburi          0.6812542 0.6826477 0.6862259 0.6685453  38.62  35.01
+## Pathumthani         0.6590331 0.6537872 0.6688508 0.6725299  36.51  33.52
+## Nakhon Pathom       0.6405068 0.6508483 0.6746041 0.6740107  39.60  36.53
+## Samut Sakhon        0.6090492 0.6261596 0.6133562 0.6075746  34.49  32.26
+## Ayutthaya           0.6483659 0.6820299 0.6891792 0.6893195  33.70  30.91
+## Ang Thong           0.6124267 0.6338426 0.6389921 0.6526108  32.88  30.40
+## Lop Buri            0.6222866 0.6210338 0.6513612 0.6502091  35.77  32.54
+## Sing buri           0.6105812 0.6521306 0.6662883 0.6724789  33.80  31.27
+## Chai Nat            0.5908755 0.6162656 0.6079591 0.6254042  31.76  30.08
+## Saraburi            0.6306581 0.6352324 0.6363500 0.6333290  34.26  31.75
+## Ratchaburi          0.6267650 0.6372675 0.6467090 0.6542416  36.27  33.40
+## Kanchanaburi        0.6014316 0.6216498 0.6245439 0.6394929  32.51  30.20
+## Suphanburi          0.6205810 0.6170525 0.6434593 0.6498538  34.79  31.97
+## Samut Songkhram     0.6311622 0.6475606 0.6522682 0.6471167  38.12  33.56
+## Phetchaburi         0.6184858 0.6593058 0.6619107 0.6559457  37.31  34.56
+## Prachuap Khiri Khan 0.6105621 0.6320040 0.6404984 0.6345071  34.48  31.75
+## Chonburi            0.6602307 0.6763859 0.6721170 0.6904238  38.59  35.76
+## Rayong              0.6320182 0.6337826 0.6579224 0.6613479  38.15  35.43
+## Chanthaburi         0.6260099 0.6200436 0.6304953 0.6262926  35.20  32.31
+## Trat                0.6215762 0.6170710 0.6362784 0.6311732  35.25  33.07
+## Chachoengsao        0.6363450 0.6504414 0.6638739 0.6629048  35.45  32.80
+## Prachin Buri        0.6176997 0.6273254 0.6411653 0.6450684  33.90  30.77
+## Nakhon Nayok        0.6147877 0.6289470 0.6291921 0.6560158  38.66  36.42
+## Sa Kaeo             0.5822926 0.6034800 0.6191430 0.6232099  31.59  29.11
+## Chiang Mai          0.6254749 0.6230518 0.6306141 0.6252816  37.85  34.83
+## Lamphun             0.6349368 0.6256658 0.6422232 0.6392181  34.80  31.65
+## Lampang             0.6287866 0.6375822 0.6578285 0.6485704  36.65  33.47
+## Uttaradit           0.6407475 0.6523243 0.6579632 0.6500583  35.12  32.06
+## Phrae               0.6270853 0.6491752 0.6597792 0.6528283  37.75  34.62
+## Nan                 0.6115330 0.6383784 0.6637245 0.6586166  35.95  33.16
+## Phayao              0.6568377 0.6341353 0.6671875 0.6509467  36.16  33.25
+## chiang rai          0.6333682 0.6258471 0.6515523 0.6341280  35.20  32.43
+## mae hong son        0.5411485 0.5454658 0.5467472 0.5729919  30.89  28.70
+## Nakhon Sawan        0.6057827 0.6237593 0.6392351 0.6205487  34.47  31.78
+## Uthai Thani         0.5726255 0.5997491 0.6211838 0.6492955  32.92  30.03
+## Kamphaeng phet      0.6165706 0.6222394 0.6287286 0.6249718  31.98  29.66
+## Tak                 0.6008946 0.5960697 0.6314275 0.6227532  32.22  29.65
+## Sukhothai           0.6099765 0.6241598 0.6360348 0.6312384  33.07  30.43
+## Phitsanulok         0.5989703 0.6095644 0.6295818 0.6256299  36.46  33.64
+## Phichit             0.5941157 0.6159312 0.6358882 0.6376758  31.90  29.77
+## Phetchabun          0.5995759 0.6017454 0.6313787 0.6485973  31.58  29.32
+## Nakhon Ratchasima   0.6110298 0.6050953 0.6160297 0.6330585  32.91  30.50
+## Buri ram            0.5585089 0.5732699 0.5867276 0.5941921  32.13  29.87
+## Surin               0.5647733 0.5801197 0.5982540 0.5997240  33.18  30.87
+## Sisaket             0.6131178 0.6097368 0.6222920 0.6101778  31.38  29.13
+## Ubon Ratchathani    0.6129244 0.6055996 0.6161366 0.6126183  31.64  29.46
+## Yasothon            0.6109574 0.6242456 0.6492894 0.6572587  31.35  29.39
+## Chaiyaphum          0.6125374 0.6318062 0.6259221 0.6238701  31.07  28.66
+## Amnat Charoen       0.6266752 0.6551526 0.6573769 0.6612698  30.91  28.77
+## Bueng Kan           0.6019061 0.6133825 0.6192894 0.6343183  30.59  28.51
+## Nong Bua Lamphu     0.6114512 0.6172023 0.6233159 0.6141559  30.06  28.19
+## Khon Kaen           0.6321216 0.6361833 0.6495916 0.6414462  33.49  31.16
+## Udon Thani          0.6265132 0.6495305 0.6510355 0.6371314  33.33  30.65
+## Loei                0.6188364 0.6267438 0.6464357 0.6297003  32.11  29.97
+## Nong Khai           0.5987779 0.6216378 0.6393269 0.6352030  31.21  29.56
+## Maha Sarakham       0.6488289 0.6441499 0.6683707 0.6713521  32.58  30.48
+## Roi et              0.6252031 0.6457857 0.6511307 0.6471484  31.88  29.54
+## Kalasin             0.6292745 0.6284042 0.6349962 0.6338339  30.34  29.08
+## Sakon Nakhon        0.5805740 0.6198148 0.6329693 0.6128674  31.73  29.94
+## Nakhon Phanom       0.6294422 0.6327326 0.6415869 0.6344623  30.68  28.73
+## Mukdahan            0.6173503 0.6282592 0.6505031 0.6614218  33.34  30.95
+## Nakhon Si Thammarat 0.6015655 0.6068158 0.6183703 0.6150231  35.49  32.65
+## Krabi               0.6118874 0.6322151 0.6348963 0.6223046  32.34  29.48
+## Phang Nga           0.6518957 0.6507342 0.6366186 0.6189724  32.63  30.12
+## Phuket              0.6375843 0.6597625 0.6213638 0.5996574  39.34  36.33
+## Suratthani          0.6108608 0.6264789 0.6425986 0.6211271  34.42  31.52
+## Ranong              0.6086278 0.6489395 0.6372497 0.6344999  33.37  31.89
+## Chumphon            0.6266241 0.6389100 0.6687372 0.6494482  34.94  32.30
+## Songkhla            0.6256767 0.6451971 0.6606255 0.6635846  37.24  34.48
+## Satun               0.6139368 0.6309767 0.6624413 0.6375319  32.65  29.87
+## Trang               0.6188201 0.6264627 0.6464667 0.6452465  36.55  33.73
+## Phatthalung         0.5916558 0.6181563 0.6319315 0.6384818  34.54  31.81
+## Pattani             0.5827669 0.6048628 0.5997994 0.6163736  28.04  26.14
+## Yala                0.6203882 0.6409535 0.6472475 0.6497193  28.50  26.44
+## Narathiwat          0.5827720 0.5895129 0.6013511 0.6031023  27.14  25.29
+## Bangkok             0.6665799 0.6762380 0.6839051 0.6655685  42.51  39.17
+##                     ONET63 ONET64 AVPOV
+## Samut Prakan         35.51  35.33  0.56
+## Nonthaburi           36.09  36.22  0.24
+## Pathumthani          35.00  36.42  0.24
+## Nakhon Pathom        37.48  41.15  0.63
+## Samut Sakhon         33.02  32.71  0.81
+## Ayutthaya            32.79  31.96  2.19
+## Ang Thong            32.10  31.64 17.32
+## Lop Buri             34.55  33.61 10.13
+## Sing buri            32.88  32.17  9.08
+## Chai Nat             31.41  31.46 17.89
+## Saraburi             32.66  33.54  0.90
+## Ratchaburi           34.78  34.13 10.83
+## Kanchanaburi         30.97  30.18  8.28
+## Suphanburi           32.89  31.76 11.56
+## Samut Songkhram      35.70  39.20  6.09
+## Phetchaburi          36.00  31.97  6.23
+## Prachuap Khiri Khan  33.79  33.99  3.17
+## Chonburi             36.92  37.03  1.17
+## Rayong               37.02  34.29  0.76
+## Chanthaburi          33.95  31.99  8.85
+## Trat                 33.57  32.80  9.73
+## Chachoengsao         33.71  34.96  5.38
+## Prachin Buri         32.46  32.66  3.52
+## Nakhon Nayok         35.07  39.79  8.36
+## Sa Kaeo              31.25  31.41 18.74
+## Chiang Mai           36.37  34.39  5.31
+## Lamphun              33.86  34.07  3.00
+## Lampang              35.40  34.64  5.18
+## Uttaradit            33.92  33.83  6.34
+## Phrae                37.10  36.52  7.10
+## Nan                  35.03  35.60 10.53
+## Phayao               35.43  33.86  6.27
+## chiang rai           34.07  32.86  8.75
+## mae hong son         30.05  30.04 24.53
+## Nakhon Sawan         33.20  31.38  4.68
+## Uthai Thani          31.40  33.19  3.55
+## Kamphaeng phet       31.47  30.00  3.63
+## Tak                  31.34  29.72 21.25
+## Sukhothai            31.98  32.61  7.76
+## Phitsanulok          35.26  31.98  4.81
+## Phichit              30.83  30.07  0.93
+## Phetchabun           30.79  29.69  5.82
+## Nakhon Ratchasima    31.95  31.14 13.57
+## Buri ram             30.89  30.17 14.06
+## Surin                32.33  30.39  7.50
+## Sisaket              31.03  29.85  6.99
+## Ubon Ratchathani     30.94  29.83 11.92
+## Yasothon             30.08  29.52 10.41
+## Chaiyaphum           29.67  29.25  3.04
+## Amnat Charoen        30.48  30.66  4.53
+## Bueng Kan            30.17  29.58  1.17
+## Nong Bua Lamphu      29.52  29.79 13.15
+## Khon Kaen            32.45  30.53  2.01
+## Udon Thani           32.03  29.52  3.97
+## Loei                 30.87  28.54  4.08
+## Nong Khai            30.64  28.83  1.91
+## Maha Sarakham        31.84  29.70  3.63
+## Roi et               31.03  30.13  2.57
+## Kalasin              30.31  29.79 19.86
+## Sakon Nakhon         31.30  30.09  8.48
+## Nakhon Phanom        29.06  28.74 13.18
+## Mukdahan             32.97  31.57 10.89
+## Nakhon Si Thammarat  34.31  30.86 12.70
+## Krabi                31.59  31.41  5.69
+## Phang Nga            32.15  31.77  2.04
+## Phuket               39.27  38.83  0.40
+## Suratthani           33.04  31.82  4.96
+## Ranong               32.86  31.58 16.88
+## Chumphon             33.85  31.34  3.03
+## Songkhla             35.91  34.00  5.96
+## Satun                32.18  30.30 14.82
+## Trang                35.45  32.89  9.93
+## Phatthalung          34.53  32.21 18.96
+## Pattani              27.13  25.29 29.86
+## Yala                 27.52  26.18 14.04
+## Narathiwat           26.20  25.03 25.76
+## Bangkok              40.79  40.27  0.58</code></pre>
+<pre class="r"><code>#https://www.youtube.com/watch?v=vnU0AGzqq4s
+
+# The mtcars dataset:
+m &lt;- as.matrix(dataset)
+
+# Default Heatmap
+heatmap(m)</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>heatmap(m, scale=&quot;column&quot;)</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<pre class="r"><code>heatmap(m, Colv = NA, Rowv = NA, scale=&quot;column&quot;)</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
+<pre class="r"><code>library(RColorBrewer)
+coul &lt;- colorRampPalette(brewer.pal(8, &quot;PiYG&quot;))(25)
+heatmap(m, scale=&quot;column&quot;, col = coul)</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-1-4.png" width="672" /></p>
+<pre class="r"><code>heatmap(m, scale=&quot;column&quot;, col = cm.colors(256))</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-1-5.png" width="672" /></p>
+<pre class="r"><code>heatmap(m, scale=&quot;column&quot;, col = terrain.colors(256))</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-1-6.png" width="672" /></p>
+<pre class="r"><code>heatmap(m, Colv = NA, Rowv = NA, scale=&quot;column&quot;, col = terrain.colors(256))</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-1-7.png" width="672" /></p>
+</div>
+<div id="scatter-plot" class="section level2">
+<h2>Scatter plot</h2>
+<p>scatterplot <a
+href="https://r-graph-gallery.com/275-add-text-labels-with-ggplot2.html"
+class="uri">https://r-graph-gallery.com/275-add-text-labels-with-ggplot2.html</a></p>
+<pre class="r"><code>head(dataset)</code></pre>
+<pre><code>##                   HAI61     HAI62     HAI63     HAI64 ONET61 ONET62 ONET63
+## Samut Prakan  0.6076119 0.6141880 0.6234185 0.6111405  37.15  33.85  35.51
+## Nonthaburi    0.6812542 0.6826477 0.6862259 0.6685453  38.62  35.01  36.09
+## Pathumthani   0.6590331 0.6537872 0.6688508 0.6725299  36.51  33.52  35.00
+## Nakhon Pathom 0.6405068 0.6508483 0.6746041 0.6740107  39.60  36.53  37.48
+## Samut Sakhon  0.6090492 0.6261596 0.6133562 0.6075746  34.49  32.26  33.02
+## Ayutthaya     0.6483659 0.6820299 0.6891792 0.6893195  33.70  30.91  32.79
+##               ONET64 AVPOV
+## Samut Prakan   35.33  0.56
+## Nonthaburi     36.22  0.24
+## Pathumthani    36.42  0.24
+## Nakhon Pathom  41.15  0.63
+## Samut Sakhon   32.71  0.81
+## Ayutthaya      31.96  2.19</code></pre>
+<pre class="r"><code>library(ggplot2)
+
+ggplot(dataset, aes(x= ONET64, y=HAI64)) +
+  geom_point() + # Show dots
+  geom_text(
+    label=rownames(dataset), 
+    nudge_x = 0.25, nudge_y = 0.25, 
+    check_overlap = T
+  )</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+## Boxplot</p>
+<pre class="r"><code>library(tidyverse)
+library(hrbrthemes)
+library(viridis)
+
+data = read.csv(&quot;D:/OneDrive/00Recent Draft/HAI64/Rgrowth/boxplot.csv&quot;)
+print(data)</code></pre>
+<pre><code>##     ID                Name       HAI  ONET Poverty Year
+## 1    1        Samut Prakan 0.6076119 37.15    0.05 2561
+## 2    2          Nonthaburi 0.6812542 38.62    0.21 2561
+## 3    3         Pathumthani 0.6590331 36.51    0.12 2561
+## 4    4       Nakhon Pathom 0.6405068 39.60    2.65 2561
+## 5    5        Samut Sakhon 0.6090492 34.49    3.98 2561
+## 6    6           Ayutthaya 0.6483659 33.70    7.57 2561
+## 7    7           Ang Thong 0.6124267 32.88   17.22 2561
+## 8    8            Lop Buri 0.6222866 35.77   14.06 2561
+## 9    9           Sing buri 0.6105812 33.80   14.71 2561
+## 10  10            Chai Nat 0.5908755 31.76   26.12 2561
+## 11  11            Saraburi 0.6306581 34.26    3.78 2561
+## 12  12          Ratchaburi 0.6267650 36.27    8.56 2561
+## 13  13        Kanchanaburi 0.6014316 32.51   13.37 2561
+## 14  14          Suphanburi 0.6205810 34.79   14.44 2561
+## 15  15     Samut Songkhram 0.6311622 38.12    4.37 2561
+## 16  16         Phetchaburi 0.6184858 37.31    6.07 2561
+## 17  17 Prachuap Khiri Khan 0.6105621 34.48    6.46 2561
+## 18  18            Chonburi 0.6602307 38.59    0.45 2561
+## 19  19              Rayong 0.6320182 38.15    1.60 2561
+## 20  20         Chanthaburi 0.6260099 35.20    2.80 2561
+## 21  21                Trat 0.6215762 35.25    8.50 2561
+## 22  22        Chachoengsao 0.6363450 35.45    2.21 2561
+## 23  23        Prachin Buri 0.6176997 33.90    1.88 2561
+## 24  24        Nakhon Nayok 0.6147877 38.66    7.60 2561
+## 25  25             Sa Kaeo 0.5822926 31.59   16.79 2561
+## 26  26          Chiang Mai 0.6254749 37.85    9.15 2561
+## 27  27             Lamphun 0.6349368 34.80    4.90 2561
+## 28  28             Lampang 0.6287866 36.65   18.43 2561
+## 29  29           Uttaradit 0.6407475 35.12   13.82 2561
+## 30  30               Phrae 0.6270853 37.75   11.34 2561
+## 31  31                 Nan 0.6115330 35.95   17.83 2561
+## 32  32              Phayao 0.6568377 36.16    8.74 2561
+## 33  33          chiang rai 0.6333682 35.20   10.76 2561
+## 34  34        Mae hong son 0.5411485 30.89   46.54 2561
+## 35  35        Nakhon Sawan 0.6057827 34.47    6.25 2561
+## 36  36         Uthai Thani 0.5726255 32.92    5.98 2561
+## 37  37      Kamphaeng phet 0.6165706 31.98    4.87 2561
+## 38  38                 Tak 0.6008946 32.22   29.60 2561
+## 39  39           Sukhothai 0.6099765 33.07   14.67 2561
+## 40  40         Phitsanulok 0.5989703 36.46    5.22 2561
+## 41  41             Phichit 0.5941157 31.90    1.34 2561
+## 42  42          Phetchabun 0.5995759 31.58    5.20 2561
+## 43  43   Nakhon Ratchasima 0.6110298 32.91   12.87 2561
+## 44  44            Buri ram 0.5585089 32.13   21.03 2561
+## 45  45               Surin 0.5647733 33.18   12.74 2561
+## 46  46             Sisaket 0.6131178 31.38   17.32 2561
+## 47  47    Ubon Ratchathani 0.6129244 31.64    7.28 2561
+## 48  48            Yasothon 0.6109574 31.35   14.18 2561
+## 49  49          Chaiyaphum 0.6125374 31.07    5.77 2561
+## 50  50       Amnat Charoen 0.6266752 30.91   19.20 2561
+## 51  51           Bueng Kan 0.6019061 30.59    7.73 2561
+## 52  52     Nong Bua Lamphu 0.6114512 30.06   17.15 2561
+## 53  53           Khon Kaen 0.6321216 33.49    5.07 2561
+## 54  54          Udon Thani 0.6265132 33.33    9.11 2561
+## 55  55                Loei 0.6188364 32.11    0.30 2561
+## 56  56           Nong Khai 0.5987779 31.21    3.15 2561
+## 57  57       Maha Sarakham 0.6488289 32.58   10.20 2561
+## 58  58              Roi et 0.6252031 31.88    8.41 2561
+## 59  59             Kalasin 0.6292745 30.34   28.60 2561
+## 60  60        Sakon Nakhon 0.5805740 31.73   12.14 2561
+## 61  61       Nakhon Phanom 0.6294422 30.68   16.85 2561
+## 62  62            Mukdahan 0.6173503 33.34   10.41 2561
+## 63  63 Nakhon Si Thammarat 0.6015655 35.49   12.49 2561
+## 64  64               Krabi 0.6118874 32.34    4.52 2561
+## 65  65           Phang Nga 0.6518957 32.63    3.72 2561
+## 66  66              Phuket 0.6375843 39.34    2.54 2561
+## 67  67          Suratthani 0.6108608 34.42    4.37 2561
+## 68  68              Ranong 0.6086278 33.37   20.75 2561
+## 69  69            Chumphon 0.6266241 34.94    4.05 2561
+## 70  70            Songkhla 0.6256767 37.24    6.47 2561
+## 71  71               Satun 0.6139368 32.65   11.96 2561
+## 72  72               Trang 0.6188201 36.55   15.06 2561
+## 73  73         Phatthalung 0.5916558 34.54   26.98 2561
+## 74  74             Pattani 0.5827669 28.04   33.22 2561
+## 75  75                Yala 0.6203882 28.50   21.52 2561
+## 76  76          Narathiwat 0.5827720 27.14   26.74 2561
+## 77  77             Bangkok 0.6665799 42.51    0.98 2561
+## 78   1        Samut Prakan 0.6141880 33.85    0.56 2562
+## 79   2          Nonthaburi 0.6826477 35.01    0.24 2562
+## 80   3         Pathumthani 0.6537872 33.52    0.24 2562
+## 81   4       Nakhon Pathom 0.6508483 36.53    0.63 2562
+## 82   5        Samut Sakhon 0.6261596 32.26    0.81 2562
+## 83   6           Ayutthaya 0.6820299 30.91    2.19 2562
+## 84   7           Ang Thong 0.6338426 30.40   17.32 2562
+## 85   8            Lop Buri 0.6210338 32.54   10.13 2562
+## 86   9           Sing buri 0.6521306 31.27    9.08 2562
+## 87  10            Chai Nat 0.6162656 30.08   17.89 2562
+## 88  11            Saraburi 0.6352324 31.75    0.90 2562
+## 89  12          Ratchaburi 0.6372675 33.40   10.83 2562
+## 90  13        Kanchanaburi 0.6216498 30.20    8.28 2562
+## 91  14          Suphanburi 0.6170525 31.97   11.56 2562
+## 92  15     Samut Songkhram 0.6475606 33.56    6.09 2562
+## 93  16         Phetchaburi 0.6593058 34.56    6.23 2562
+## 94  17 Prachuap Khiri Khan 0.6320040 31.75    3.17 2562
+## 95  18            Chonburi 0.6763859 35.76    1.17 2562
+## 96  19              Rayong 0.6337826 35.43    0.76 2562
+## 97  20         Chanthaburi 0.6200436 32.31    8.85 2562
+## 98  21                Trat 0.6170710 33.07    9.73 2562
+## 99  22        Chachoengsao 0.6504414 32.80    5.38 2562
+## 100 23        Prachin Buri 0.6273254 30.77    3.52 2562
+## 101 24        Nakhon Nayok 0.6289470 36.42    8.36 2562
+## 102 25             Sa Kaeo 0.6034800 29.11   18.74 2562
+## 103 26          Chiang Mai 0.6230518 34.83    5.31 2562
+## 104 27             Lamphun 0.6256658 31.65    3.00 2562
+## 105 28             Lampang 0.6375822 33.47    5.18 2562
+## 106 29           Uttaradit 0.6523243 32.06    6.34 2562
+## 107 30               Phrae 0.6491752 34.62    7.10 2562
+## 108 31                 Nan 0.6383784 33.16   10.53 2562
+## 109 32              Phayao 0.6341353 33.25    6.27 2562
+## 110 33          chiang rai 0.6258471 32.43    8.75 2562
+## 111 34        Mae hong son 0.5454658 28.70   24.53 2562
+## 112 35        Nakhon Sawan 0.6237593 31.78    4.68 2562
+## 113 36         Uthai Thani 0.5997491 30.03    3.55 2562
+## 114 37      Kamphaeng phet 0.6222394 29.66    3.63 2562
+## 115 38                 Tak 0.5960697 29.65   21.25 2562
+## 116 39           Sukhothai 0.6241598 30.43    7.76 2562
+## 117 40         Phitsanulok 0.6095644 33.64    4.81 2562
+## 118 41             Phichit 0.6159312 29.77    0.93 2562
+## 119 42          Phetchabun 0.6017454 29.32    5.82 2562
+## 120 43   Nakhon Ratchasima 0.6050953 30.50   13.57 2562
+## 121 44            Buri ram 0.5732699 29.87   14.06 2562
+## 122 45               Surin 0.5801197 30.87    7.50 2562
+## 123 46             Sisaket 0.6097368 29.13    6.99 2562
+## 124 47    Ubon Ratchathani 0.6055996 29.46   11.92 2562
+## 125 48            Yasothon 0.6242456 29.39   10.41 2562
+## 126 49          Chaiyaphum 0.6318062 28.66    3.04 2562
+## 127 50       Amnat Charoen 0.6551526 28.77    4.53 2562
+## 128 51           Bueng Kan 0.6133825 28.51    1.17 2562
+## 129 52     Nong Bua Lamphu 0.6172023 28.19   13.15 2562
+## 130 53           Khon Kaen 0.6361833 31.16    2.01 2562
+## 131 54          Udon Thani 0.6495305 30.65    3.97 2562
+## 132 55                Loei 0.6267438 29.97    4.08 2562
+## 133 56           Nong Khai 0.6216378 29.56    1.91 2562
+## 134 57       Maha Sarakham 0.6441499 30.48    3.63 2562
+## 135 58              Roi et 0.6457857 29.54    2.57 2562
+## 136 59             Kalasin 0.6284042 29.08   19.86 2562
+## 137 60        Sakon Nakhon 0.6198148 29.94    8.48 2562
+## 138 61       Nakhon Phanom 0.6327326 28.73   13.18 2562
+## 139 62            Mukdahan 0.6282592 30.95   10.89 2562
+## 140 63 Nakhon Si Thammarat 0.6068158 32.65   12.70 2562
+## 141 64               Krabi 0.6322151 29.48    5.69 2562
+## 142 65           Phang Nga 0.6507342 30.12    2.04 2562
+## 143 66              Phuket 0.6597625 36.33    0.40 2562
+## 144 67          Suratthani 0.6264789 31.52    4.96 2562
+## 145 68              Ranong 0.6489395 31.89   16.88 2562
+## 146 69            Chumphon 0.6389100 32.30    3.03 2562
+## 147 70            Songkhla 0.6451971 34.48    5.96 2562
+## 148 71               Satun 0.6309767 29.87   14.82 2562
+## 149 72               Trang 0.6264627 33.73    9.93 2562
+## 150 73         Phatthalung 0.6181563 31.81   18.96 2562
+## 151 74             Pattani 0.6048628 26.14   29.86 2562
+## 152 75                Yala 0.6409535 26.44   14.04 2562
+## 153 76          Narathiwat 0.5895129 25.29   25.76 2562
+## 154 77             Bangkok 0.6762380 39.17    0.58 2562
+## 155  1        Samut Prakan 0.6234185 35.51    0.19 2563
+## 156  2          Nonthaburi 0.6862259 36.09    0.54 2563
+## 157  3         Pathumthani 0.6688508 35.00    0.47 2563
+## 158  4       Nakhon Pathom 0.6746041 37.48    0.82 2563
+## 159  5        Samut Sakhon 0.6133562 33.02    1.23 2563
+## 160  6           Ayutthaya 0.6891792 32.79    4.62 2563
+## 161  7           Ang Thong 0.6389921 32.10   15.03 2563
+## 162  8            Lop Buri 0.6513612 34.55    6.29 2563
+## 163  9           Sing buri 0.6662883 32.88    7.55 2563
+## 164 10            Chai Nat 0.6079591 31.41   15.05 2563
+## 165 11            Saraburi 0.6363500 32.66    2.34 2563
+## 166 12          Ratchaburi 0.6467090 34.78    4.61 2563
+## 167 13        Kanchanaburi 0.6245439 30.97    9.52 2563
+## 168 14          Suphanburi 0.6434593 32.89   11.00 2563
+## 169 15     Samut Songkhram 0.6522682 35.70    6.45 2563
+## 170 16         Phetchaburi 0.6619107 36.00    3.43 2563
+## 171 17 Prachuap Khiri Khan 0.6404984 33.79    3.73 2563
+## 172 18            Chonburi 0.6721170 36.92    0.04 2563
+## 173 19              Rayong 0.6579224 37.02    0.47 2563
+## 174 20         Chanthaburi 0.6304953 33.95    6.54 2563
+## 175 21                Trat 0.6362784 33.57   11.21 2563
+## 176 22        Chachoengsao 0.6638739 33.71    1.40 2563
+## 177 23        Prachin Buri 0.6411653 32.46    3.52 2563
+## 178 24        Nakhon Nayok 0.6291921 35.07    2.51 2563
+## 179 25             Sa Kaeo 0.6191430 31.25    9.83 2563
+## 180 26          Chiang Mai 0.6306141 36.37    2.94 2563
+## 181 27             Lamphun 0.6422232 33.86    1.68 2563
+## 182 28             Lampang 0.6578285 35.40    5.88 2563
+## 183 29           Uttaradit 0.6579632 33.92   11.32 2563
+## 184 30               Phrae 0.6597792 37.10    9.64 2563
+## 185 31                 Nan 0.6637245 35.03   10.19 2563
+## 186 32              Phayao 0.6671875 35.43   16.45 2563
+## 187 33          chiang rai 0.6515523 34.07    8.32 2563
+## 188 34        Mae hong son 0.5467472 30.05   28.59 2563
+## 189 35        Nakhon Sawan 0.6392351 33.20    6.03 2563
+## 190 36         Uthai Thani 0.6211838 31.40   11.64 2563
+## 191 37      Kamphaeng phet 0.6287286 31.47    1.17 2563
+## 192 38                 Tak 0.6314275 31.34   18.65 2563
+## 193 39           Sukhothai 0.6360348 31.98   13.20 2563
+## 194 40         Phitsanulok 0.6295818 35.26    1.29 2563
+## 195 41             Phichit 0.6358882 30.83    1.21 2563
+## 196 42          Phetchabun 0.6313787 30.79    2.84 2563
+## 197 43   Nakhon Ratchasima 0.6160297 31.95   21.20 2563
+## 198 44            Buri ram 0.5867276 30.89   15.85 2563
+## 199 45               Surin 0.5982540 32.33   13.82 2563
+## 200 46             Sisaket 0.6222920 31.03   16.72 2563
+## 201 47    Ubon Ratchathani 0.6161366 30.94   11.98 2563
+## 202 48            Yasothon 0.6492894 30.08    6.96 2563
+## 203 49          Chaiyaphum 0.6259221 29.67    4.68 2563
+## 204 50       Amnat Charoen 0.6573769 30.48   16.06 2563
+## 205 51           Bueng Kan 0.6192894 30.17    4.88 2563
+## 206 52     Nong Bua Lamphu 0.6233159 29.52    9.38 2563
+## 207 53           Khon Kaen 0.6495916 32.45    1.15 2563
+## 208 54          Udon Thani 0.6510355 32.03   11.00 2563
+## 209 55                Loei 0.6464357 30.87    0.32 2563
+## 210 56           Nong Khai 0.6393269 30.64    3.40 2563
+## 211 57       Maha Sarakham 0.6683707 31.84    3.75 2563
+## 212 58              Roi et 0.6511307 31.03    8.83 2563
+## 213 59             Kalasin 0.6349962 30.31   23.14 2563
+## 214 60        Sakon Nakhon 0.6329693 31.30    8.63 2563
+## 215 61       Nakhon Phanom 0.6415869 29.06   19.65 2563
+## 216 62            Mukdahan 0.6505031 32.97    8.08 2563
+## 217 63 Nakhon Si Thammarat 0.6183703 34.31    9.70 2563
+## 218 64               Krabi 0.6348963 31.59    2.47 2563
+## 219 65           Phang Nga 0.6366186 32.15    1.02 2563
+## 220 66              Phuket 0.6213638 39.27    0.00 2563
+## 221 67          Suratthani 0.6425986 33.04    3.00 2563
+## 222 68              Ranong 0.6372497 32.86   21.94 2563
+## 223 69            Chumphon 0.6687372 33.85    6.38 2563
+## 224 70            Songkhla 0.6606255 35.91    6.04 2563
+## 225 71               Satun 0.6624413 32.18    7.33 2563
+## 226 72               Trang 0.6464667 35.45   14.26 2563
+## 227 73         Phatthalung 0.6319315 34.53   15.03 2563
+## 228 74             Pattani 0.5997994 27.13   44.20 2563
+## 229 75                Yala 0.6472475 27.52   17.39 2563
+## 230 76          Narathiwat 0.6013511 26.20   24.99 2563
+## 231 77             Bangkok 0.6839051 40.79    0.49 2563
+## 232  1        Samut Prakan 0.6111405 35.33    1.08 2564
+## 233  2          Nonthaburi 0.6685453 36.22    0.00 2564
+## 234  3         Pathumthani 0.6725299 36.42    0.98 2564
+## 235  4       Nakhon Pathom 0.6740107 41.15    2.68 2564
+## 236  5        Samut Sakhon 0.6075746 32.71    5.16 2564
+## 237  6           Ayutthaya 0.6893195 31.96    1.56 2564
+## 238  7           Ang Thong 0.6526108 31.64   15.10 2564
+## 239  8            Lop Buri 0.6502091 33.61    2.95 2564
+## 240  9           Sing buri 0.6724789 32.17    5.21 2564
+## 241 10            Chai Nat 0.6254042 31.46   15.37 2564
+## 242 11            Saraburi 0.6333290 33.54    3.30 2564
+## 243 12          Ratchaburi 0.6542416 34.13    4.80 2564
+## 244 13        Kanchanaburi 0.6394929 30.18    5.92 2564
+## 245 14          Suphanburi 0.6498538 31.76   10.48 2564
+## 246 15     Samut Songkhram 0.6471167 39.20    4.63 2564
+## 247 16         Phetchaburi 0.6559457 31.97    4.42 2564
+## 248 17 Prachuap Khiri Khan 0.6345071 33.99    1.93 2564
+## 249 18            Chonburi 0.6904238 37.03    0.00 2564
+## 250 19              Rayong 0.6613479 34.29    0.12 2564
+## 251 20         Chanthaburi 0.6262926 31.99    4.43 2564
+## 252 21                Trat 0.6311732 32.80    6.19 2564
+## 253 22        Chachoengsao 0.6629048 34.96    0.54 2564
+## 254 23        Prachin Buri 0.6450684 32.66    2.97 2564
+## 255 24        Nakhon Nayok 0.6560158 39.79    3.26 2564
+## 256 25             Sa Kaeo 0.6232099 31.41   12.02 2564
+## 257 26          Chiang Mai 0.6252816 34.39    5.43 2564
+## 258 27             Lamphun 0.6392181 34.07    2.12 2564
+## 259 28             Lampang 0.6485704 34.64    7.43 2564
+## 260 29           Uttaradit 0.6500583 33.83   10.08 2564
+## 261 30               Phrae 0.6528283 36.52    9.79 2564
+## 262 31                 Nan 0.6586166 35.60    5.15 2564
+## 263 32              Phayao 0.6509467 33.86   18.13 2564
+## 264 33          chiang rai 0.6341280 32.86    5.96 2564
+## 265 34        Mae hong son 0.5729919 30.04   24.59 2564
+## 266 35        Nakhon Sawan 0.6205487 31.38    5.70 2564
+## 267 36         Uthai Thani 0.6492955 33.19    6.52 2564
+## 268 37      Kamphaeng phet 0.6249718 30.00    2.13 2564
+## 269 38                 Tak 0.6227532 29.72   13.04 2564
+## 270 39           Sukhothai 0.6312384 32.61   15.28 2564
+## 271 40         Phitsanulok 0.6256299 31.98    0.64 2564
+## 272 41             Phichit 0.6376758 30.07    1.48 2564
+## 273 42          Phetchabun 0.6485973 29.69    5.41 2564
+## 274 43   Nakhon Ratchasima 0.6330585 31.14   21.01 2564
+## 275 44            Buri ram 0.5941921 30.17    8.61 2564
+## 276 45               Surin 0.5997240 30.39    6.60 2564
+## 277 46             Sisaket 0.6101778 29.85   18.10 2564
+## 278 47    Ubon Ratchathani 0.6126183 29.83   15.15 2564
+## 279 48            Yasothon 0.6572587 29.52    2.57 2564
+## 280 49          Chaiyaphum 0.6238701 29.25    2.98 2564
+## 281 50       Amnat Charoen 0.6612698 30.66    6.90 2564
+## 282 51           Bueng Kan 0.6343183 29.58    2.31 2564
+## 283 52     Nong Bua Lamphu 0.6141559 29.79   18.12 2564
+## 284 53           Khon Kaen 0.6414462 30.53    0.58 2564
+## 285 54          Udon Thani 0.6371314 29.52    9.45 2564
+## 286 55                Loei 0.6297003 28.54    0.97 2564
+## 287 56           Nong Khai 0.6352030 28.83    5.55 2564
+## 288 57       Maha Sarakham 0.6713521 29.70    2.24 2564
+## 289 58              Roi et 0.6471484 30.13    6.62 2564
+## 290 59             Kalasin 0.6338339 29.79   25.20 2564
+## 291 60        Sakon Nakhon 0.6128674 30.09    6.82 2564
+## 292 61       Nakhon Phanom 0.6344623 28.74   12.95 2564
+## 293 62            Mukdahan 0.6614218 31.57    2.82 2564
+## 294 63 Nakhon Si Thammarat 0.6150231 30.86   13.16 2564
+## 295 64               Krabi 0.6223046 31.41    8.06 2564
+## 296 65           Phang Nga 0.6189724 31.77    4.47 2564
+## 297 66              Phuket 0.5996574 38.83    0.63 2564
+## 298 67          Suratthani 0.6211271 31.82    3.65 2564
+## 299 68              Ranong 0.6344999 31.58   19.90 2564
+## 300 69            Chumphon 0.6494482 31.34    4.40 2564
+## 301 70            Songkhla 0.6635846 34.00    5.97 2564
+## 302 71               Satun 0.6375319 30.30    9.83 2564
+## 303 72               Trang 0.6452465 32.89   11.55 2564
+## 304 73         Phatthalung 0.6384818 32.21   12.12 2564
+## 305 74             Pattani 0.6163736 25.29   30.85 2564
+## 306 75                Yala 0.6497193 26.18   19.25 2564
+## 307 76          Narathiwat 0.6031023 25.03   18.69 2564
+## 308 77             Bangkok 0.6655685 40.27    0.57 2564</code></pre>
+<pre class="r"><code>head(data)</code></pre>
+<pre><code>##   ID          Name       HAI  ONET Poverty Year
+## 1  1  Samut Prakan 0.6076119 37.15    0.05 2561
+## 2  2    Nonthaburi 0.6812542 38.62    0.21 2561
+## 3  3   Pathumthani 0.6590331 36.51    0.12 2561
+## 4  4 Nakhon Pathom 0.6405068 39.60    2.65 2561
+## 5  5  Samut Sakhon 0.6090492 34.49    3.98 2561
+## 6  6     Ayutthaya 0.6483659 33.70    7.57 2561</code></pre>
+<pre class="r"><code>sapply(data, class)</code></pre>
+<pre><code>##          ID        Name         HAI        ONET     Poverty        Year 
+##   &quot;integer&quot; &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;integer&quot;</code></pre>
+<pre class="r"><code>year &lt;- as.character(data)
+class(year)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>sapply(data, class)</code></pre>
+<pre><code>##          ID        Name         HAI        ONET     Poverty        Year 
+##   &quot;integer&quot; &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;integer&quot;</code></pre>
+<pre class="r"><code>data$Year &lt;- as.character(data$Year)
+sapply(data, class)</code></pre>
+<pre><code>##          ID        Name         HAI        ONET     Poverty        Year 
+##   &quot;integer&quot; &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot; &quot;character&quot;</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(hrbrthemes)
+library(viridis)
+data = read.csv(&quot;D:/OneDrive/00Recent Draft/HAI64/Rgrowth/boxplot.csv&quot;)
+head(data)</code></pre>
+<pre><code>##   ID          Name       HAI  ONET Poverty Year
+## 1  1  Samut Prakan 0.6076119 37.15    0.05 2561
+## 2  2    Nonthaburi 0.6812542 38.62    0.21 2561
+## 3  3   Pathumthani 0.6590331 36.51    0.12 2561
+## 4  4 Nakhon Pathom 0.6405068 39.60    2.65 2561
+## 5  5  Samut Sakhon 0.6090492 34.49    3.98 2561
+## 6  6     Ayutthaya 0.6483659 33.70    7.57 2561</code></pre>
+<pre class="r"><code>sapply(data, class)</code></pre>
+<pre><code>##          ID        Name         HAI        ONET     Poverty        Year 
+##   &quot;integer&quot; &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;integer&quot;</code></pre>
+<pre class="r"><code>data$Year &lt;- as.character(data$Year)
+sapply(data, class)</code></pre>
+<pre><code>##          ID        Name         HAI        ONET     Poverty        Year 
+##   &quot;integer&quot; &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot; &quot;character&quot;</code></pre>
+<pre class="r"><code>data %&gt;%
+  ggplot(aes(x=Year, y=ONET, fill= Year)) +
+  geom_boxplot() +
+  scale_color_grey(start = 0, end = .9) +
+  geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) +
+  theme_ipsum() +
+  theme(
+    legend.position=&quot;none&quot;,
+    plot.title = element_text(size=11)
+  )  +
+scale_fill_grey(start = .3, end = .8)</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

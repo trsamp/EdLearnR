@@ -8,6 +8,8 @@ navbar:
       href: lavaan.html
     - text: "Mplus"
       href: Mplus.html
+    - text: "Heatmap"
+      href: Heatmap.html
     - text: "Links"
       href: Links.html
 output_dir: "docs"

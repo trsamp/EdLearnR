@@ -177,6 +177,40 @@ sessionInfo()
 
 ```
 
+# Growth modeling
+
+```{r}
+library(lavaan)
+
+GW <- read.csv("D:/OneDrive/00Recent Draft/HAI64/Rgrowth/Zgrowth.csv", header = TRUE)
+
+```
+```{r}
+m1 <-   'i =~ 1*HAI61 + 1*HAI62 + 1*HAI63 + 1*HAI64
+         s =~ 0*HAI61+ 1*HAI62 + 2*HAI63 + 3*HAI64
+          HAI61 ~ ONET61
+          HAI62 ~ ONET62
+          HAI63 ~ ONET63
+          HAI64 ~ ONET64
+          i ~ A4.2
+          s ~ A4.2
+'
+fit_m1 <- growth(m1, data= GW)
+summary(fit_m1, rsquare = TRUE, standardize = TRUE)
+
+fitMeasures(fit_m1, c("cfi","tli", "rmsea","srmr"))
+
+#latent correlation
+lavInspect(fit_m1, "cor.lv")
+
+?lavInspect
+
+library(semPlot)
+
+semPaths(fit_m1,
+         whatLabels = "std",
+         layout = "tree")
+```
 
 
 

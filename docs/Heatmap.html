@@ -358,7 +358,7 @@ div.tocify {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
 </script>
-<p>Last compiled: 2022-12-13</p>
+<p>Last compiled: 2022-12-14</p>
 <div id="ggplot" class="section level2">
 <h2>ggPlot</h2>
 <pre class="r"><code>library(heatmaply)
@@ -903,12 +903,6 @@ print(data)</code></pre>
 <pre class="r"><code>sapply(data, class)</code></pre>
 <pre><code>##          ID        Name         HAI        ONET     Poverty        Year 
 ##   &quot;integer&quot; &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;integer&quot;</code></pre>
-<pre class="r"><code>year &lt;- as.character(data)
-class(year)</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>sapply(data, class)</code></pre>
-<pre><code>##          ID        Name         HAI        ONET     Poverty        Year 
-##   &quot;integer&quot; &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;integer&quot;</code></pre>
 <pre class="r"><code>data$Year &lt;- as.character(data$Year)
 sapply(data, class)</code></pre>
 <pre><code>##          ID        Name         HAI        ONET     Poverty        Year 
@@ -933,17 +927,125 @@ sapply(data, class)</code></pre>
 <pre><code>##          ID        Name         HAI        ONET     Poverty        Year 
 ##   &quot;integer&quot; &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;numeric&quot; &quot;character&quot;</code></pre>
 <pre class="r"><code>data %&gt;%
+  ggplot(aes(x=Year, y=HAI, fill= Year)) +
+  geom_boxplot() +
+  scale_fill_viridis(discrete = TRUE, alpha=0.6) +
+  geom_jitter(color=&quot;black&quot;, size=0.5, alpha=0.9) +
+  theme_ipsum() +
+  theme(text=element_text(family=&quot;Times New Roman&quot;, size=12))+
+  theme(
+    legend.position=&quot;none&quot;,
+    plot.title = element_text(size=11)
+  ) +
+  xlab(&quot;Year&quot;)+ ylab(&quot;HAI&quot;)</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>data %&gt;%
   ggplot(aes(x=Year, y=ONET, fill= Year)) +
   geom_boxplot() +
   scale_color_grey(start = 0, end = .9) +
-  geom_jitter(color=&quot;black&quot;, size=0.4, alpha=0.9) +
+  geom_jitter(color=&quot;black&quot;, size=0.5, alpha=0.9) +
   theme_ipsum() +
   theme(
     legend.position=&quot;none&quot;,
     plot.title = element_text(size=11)
   )  +
+  xlab(&quot;Year&quot;)+ ylab(&quot;ONET&quot;)+
 scale_fill_grey(start = .3, end = .8)</code></pre>
-<p><img src="Heatmap_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+## Scatter Plot</p>
+<pre class="r"><code>quin &lt;- read.csv(&quot;D:/OneDrive/00Recent Draft/HAI64/Rgrowth/quin.csv&quot;)
+quin</code></pre>
+<pre><code>##               Province     HAI64 ONET64 Quintiles
+## 1         Samut Prakan 0.6111405  35.33         1
+## 2         Samut Sakhon 0.6075746  32.71         1
+## 3         mae hong son 0.5729919  30.04         1
+## 4         Nakhon Sawan 0.6205487  31.38         1
+## 5             Buri ram 0.5941921  30.17         1
+## 6                Surin 0.5997240  30.39         1
+## 7              Sisaket 0.6101778  29.85         1
+## 8     Ubon Ratchathani 0.6126183  29.83         1
+## 9      Nong Bua Lamphu 0.6141559  29.79         1
+## 10        Sakon Nakhon 0.6128674  30.09         1
+## 11 Nakhon Si Thammarat 0.6150231  30.86         1
+## 12           Phang Nga 0.6189724  31.77         1
+## 13              Phuket 0.5996574  38.83         1
+## 14          Suratthani 0.6211271  31.82         1
+## 15             Pattani 0.6163736  25.29         1
+## 16          Narathiwat 0.6031023  25.03         1
+## 17            Chai Nat 0.6254042  31.46         2
+## 18            Saraburi 0.6333290  33.54         2
+## 19         Chanthaburi 0.6262926  31.99         2
+## 20                Trat 0.6311732  32.80         2
+## 21             Sa Kaeo 0.6232099  31.41         2
+## 22          Chiang Mai 0.6252816  34.39         2
+## 23          chiang rai 0.6341280  32.86         2
+## 24      Kamphaeng phet 0.6249718  30.00         2
+## 25                 Tak 0.6227532  29.72         2
+## 26           Sukhothai 0.6312384  32.61         2
+## 27         Phitsanulok 0.6256299  31.98         2
+## 28   Nakhon Ratchasima 0.6330585  31.14         2
+## 29          Chaiyaphum 0.6238701  29.25         2
+## 30                Loei 0.6297003  28.54         2
+## 31             Kalasin 0.6338339  29.79         2
+## 32               Krabi 0.6223046  31.41         2
+## 33        Kanchanaburi 0.6394929  30.18         3
+## 34     Samut Songkhram 0.6471167  39.20         3
+## 35 Prachuap Khiri Khan 0.6345071  33.99         3
+## 36        Prachin Buri 0.6450684  32.66         3
+## 37             Lamphun 0.6392181  34.07         3
+## 38             Phichit 0.6376758  30.07         3
+## 39           Bueng Kan 0.6343183  29.58         3
+## 40           Khon Kaen 0.6414462  30.53         3
+## 41          Udon Thani 0.6371314  29.52         3
+## 42           Nong Khai 0.6352030  28.83         3
+## 43              Roi et 0.6471484  30.13         3
+## 44       Nakhon Phanom 0.6344623  28.74         3
+## 45              Ranong 0.6344999  31.58         3
+## 46               Satun 0.6375319  30.30         3
+## 47               Trang 0.6452465  32.89         3
+## 48         Phatthalung 0.6384818  32.21         3
+## 49           Ang Thong 0.6526108  31.64         4
+## 50            Lop Buri 0.6502091  33.61         4
+## 51          Ratchaburi 0.6542416  34.13         4
+## 52          Suphanburi 0.6498538  31.76         4
+## 53         Phetchaburi 0.6559457  31.97         4
+## 54        Nakhon Nayok 0.6560158  39.79         4
+## 55             Lampang 0.6485704  34.64         4
+## 56           Uttaradit 0.6500583  33.83         4
+## 57               Phrae 0.6528283  36.52         4
+## 58                 Nan 0.6586166  35.60         4
+## 59              Phayao 0.6509467  33.86         4
+## 60         Uthai Thani 0.6492955  33.19         4
+## 61          Phetchabun 0.6485973  29.69         4
+## 62            Yasothon 0.6572587  29.52         4
+## 63            Chumphon 0.6494482  31.34         4
+## 64                Yala 0.6497193  26.18         4
+## 65          Nonthaburi 0.6685453  36.22         5
+## 66         Pathumthani 0.6725299  36.42         5
+## 67       Nakhon Pathom 0.6740107  41.15         5
+## 68           Ayutthaya 0.6893195  31.96         5
+## 69           Sing buri 0.6724789  32.17         5
+## 70            Chonburi 0.6904238  37.03         5
+## 71              Rayong 0.6613479  34.29         5
+## 72        Chachoengsao 0.6629048  34.96         5
+## 73       Amnat Charoen 0.6612698  30.66         5
+## 74       Maha Sarakham 0.6713521  29.70         5
+## 75            Mukdahan 0.6614218  31.57         5
+## 76            Songkhla 0.6635846  34.00         5
+## 77             Bangkok 0.6655685  40.27         5</code></pre>
+<pre class="r"><code>sapply(quin, class)</code></pre>
+<pre><code>##    Province       HAI64      ONET64   Quintiles 
+## &quot;character&quot;   &quot;numeric&quot;   &quot;numeric&quot;   &quot;integer&quot;</code></pre>
+<pre class="r"><code>ggplot(quin, aes(x=ONET64, y=HAI64, alpha=Quintiles)) + 
+  geom_point(size=6,  color=&quot;#B0ABAA&quot;) +
+  theme_ipsum()</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>#basic chart
+basic=ggplot(quin, aes(ONET64, HAI64)) +
+  geom_point() +
+  facet_wrap(~ Quintiles, ncol = 5)
+basic</code></pre>
+<p><img src="Heatmap_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 
 

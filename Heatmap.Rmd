@@ -82,9 +82,7 @@ head(data)
 sapply(data, class)
 ```
 ```{r}
-year <- as.character(data)
-class(year)
-sapply(data, class)
+
 data$Year <- as.character(data$Year)
 sapply(data, class)
 ```
@@ -100,16 +98,57 @@ data$Year <- as.character(data$Year)
 sapply(data, class)
 
 data %>%
+  ggplot(aes(x=Year, y=HAI, fill= Year)) +
+  geom_boxplot() +
+  scale_fill_viridis(discrete = TRUE, alpha=0.6) +
+  geom_jitter(color="black", size=0.5, alpha=0.9) +
+  theme_ipsum() +
+  theme(text=element_text(family="Times New Roman", size=12))+
+  theme(
+    legend.position="none",
+    plot.title = element_text(size=11)
+  ) +
+  xlab("Year")+ ylab("HAI")
+```
+
+```{r}
+data %>%
   ggplot(aes(x=Year, y=ONET, fill= Year)) +
   geom_boxplot() +
   scale_color_grey(start = 0, end = .9) +
-  geom_jitter(color="black", size=0.4, alpha=0.9) +
+  geom_jitter(color="black", size=0.5, alpha=0.9) +
   theme_ipsum() +
   theme(
     legend.position="none",
     plot.title = element_text(size=11)
   )  +
+  xlab("Year")+ ylab("ONET")+
 scale_fill_grey(start = .3, end = .8)
+```
+## Scatter Plot
+
+```{r}
+quin <- read.csv("D:/OneDrive/00Recent Draft/HAI64/Rgrowth/quin.csv")
+quin
+```
+
+
+```{r}
+sapply(quin, class)
+```
+
+
+```{r}
+ggplot(quin, aes(x=ONET64, y=HAI64, alpha=Quintiles)) + 
+  geom_point(size=6,  color="#B0ABAA") +
+  theme_ipsum()
+```
+```{r}
+#basic chart
+basic=ggplot(quin, aes(ONET64, HAI64)) +
+  geom_point() +
+  facet_wrap(~ Quintiles, ncol = 5)
+basic
 ```
 
 

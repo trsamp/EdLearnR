@@ -10,6 +10,6 @@ navbar:
       href: Mplus.html
     - text: "Heatmap"
       href: Heatmap.html
-    - text: "Links"
+    - text: "Link"
       href: Links.html
 output_dir: "docs"

@@ -46,6 +46,9 @@ regression.cor <- lav_matrix_lower2full(c(1.0,
 colnames(regression.cor) <- rownames(regression.cor) <- c("TFL", "TSL", "CTE","TEF")
 regression.cor
 
+reg.cov = cor2cov(R = regression.cor, sds = c(0.82, 0.55, 0.65, 0.99 ))
+reg.cov
+
 #model syntax
 regression.model <- '
 TEF ~ TFL + TSL + CTE
@@ -53,13 +56,14 @@ CTE ~ TFL + TSL
 '
 #model fit
 regression.fit <- sem(regression.model, sample.cov = regression.cor, sample.nobs = 813)
-summary(regression.fit, rsquare = TRUE)
+summary(regression.fit, standardized = TRUE, rsquare = TRUE)
 
 #diagram
 library(semPlot)
 semPaths(regression.fit,
          whatLabels="STDE",
-         layout = "tree")
+         layout = "tree",
+         rotation = 1)
 #adjust path
 semPaths(regression.fit,
          whatLabels="STDE",

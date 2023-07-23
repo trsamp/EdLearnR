@@ -13,7 +13,7 @@
 
 <title>SEM with lavaan</title>
 
-<script src="site_libs/header-attrs-2.18/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -358,7 +358,7 @@ div.tocify {
   addClassKlippyTo("pre.r, pre.markdown");
   addKlippy('right', 'top', 'auto', '1', 'Copy code', 'Copied!');
 </script>
-<p>Last compiled: 2022-12-31 # Basic R</p>
+<p>Last compiled: 2023-07-23 # Basic R</p>
 <p>ตรวจสอบตำแหน่ง</p>
 <pre class="r"><code>getwd()</code></pre>
 <pre><code>## [1] &quot;D:/OneDrive/09Rmarkdown/EdLearnR&quot;</code></pre>
@@ -388,6 +388,13 @@ regression.cor</code></pre>
 ## TSL 0.14  1.00 -0.14 -0.03
 ## CTE 0.34 -0.14  1.00  0.43
 ## TEF 0.23 -0.03  0.43  1.00</code></pre>
+<pre class="r"><code>reg.cov = cor2cov(R = regression.cor, sds = c(0.82, 0.55, 0.65, 0.99 ))
+reg.cov</code></pre>
+<pre><code>##          TFL       TSL       CTE       TEF
+## TFL 0.672400  0.063140  0.181220  0.186714
+## TSL 0.063140  0.302500 -0.050050 -0.016335
+## CTE 0.181220 -0.050050  0.422500  0.276705
+## TEF 0.186714 -0.016335  0.276705  0.980100</code></pre>
 <pre class="r"><code>#model syntax
 regression.model &lt;- &#39;
 TEF ~ TFL + TSL + CTE
@@ -395,8 +402,8 @@ CTE ~ TFL + TSL
 &#39;
 #model fit
 regression.fit &lt;- sem(regression.model, sample.cov = regression.cor, sample.nobs = 813)
-summary(regression.fit, rsquare = TRUE)</code></pre>
-<pre><code>## lavaan 0.6-12 ended normally after 1 iterations
+summary(regression.fit, standardized = TRUE, rsquare = TRUE)</code></pre>
+<pre><code>## lavaan 0.6.16 ended normally after 1 iteration
 ## 
 ##   Estimator                                         ML
 ##   Optimization method                           NLMINB
@@ -416,19 +423,19 @@ summary(regression.fit, rsquare = TRUE)</code></pre>
 ##   Information saturated (h1) model          Structured
 ## 
 ## Regressions:
-##                    Estimate  Std.Err  z-value  P(&gt;|z|)
-##   TEF ~                                               
-##     TFL               0.092    0.034    2.688    0.007
-##     TSL               0.013    0.032    0.407    0.684
-##     CTE               0.401    0.034   11.712    0.000
-##   CTE ~                                               
-##     TFL               0.367    0.033   11.242    0.000
-##     TSL              -0.191    0.033   -5.865    0.000
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##   TEF ~                                                                 
+##     TFL               0.092    0.034    2.688    0.007    0.092    0.092
+##     TSL               0.013    0.032    0.407    0.684    0.013    0.013
+##     CTE               0.401    0.034   11.712    0.000    0.401    0.401
+##   CTE ~                                                                 
+##     TFL               0.367    0.033   11.242    0.000    0.367    0.367
+##     TSL              -0.191    0.033   -5.865    0.000   -0.191   -0.191
 ## 
 ## Variances:
-##                    Estimate  Std.Err  z-value  P(&gt;|z|)
-##    .TEF               0.806    0.040   20.162    0.000
-##    .CTE               0.847    0.042   20.162    0.000
+##                    Estimate  Std.Err  z-value  P(&gt;|z|)   Std.lv  Std.all
+##    .TEF               0.806    0.040   20.162    0.000    0.806    0.807
+##    .CTE               0.847    0.042   20.162    0.000    0.847    0.849
 ## 
 ## R-Square:
 ##                    Estimate
@@ -438,7 +445,8 @@ summary(regression.fit, rsquare = TRUE)</code></pre>
 library(semPlot)
 semPaths(regression.fit,
          whatLabels=&quot;STDE&quot;,
-         layout = &quot;tree&quot;)</code></pre>
+         layout = &quot;tree&quot;,
+         rotation = 1)</code></pre>
 <p><img src="lavaan_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code>#adjust path
 semPaths(regression.fit,
